@@ -1,0 +1,31 @@
+.Tag {
+    background-color: rgba(34, 73, 128, 1.0);
+}
+
+.Tag:hover {
+
+}
+
+.Tag.Addable {
+
+}
+
+.Tag.Addable:hover {
+    background-color: rgb(30, 112, 24);
+}
+
+.Tag.Removable {
+
+}
+
+.Tag.Removable:hover {
+    background-color: rgba(192, 57, 43, 1.0);
+}
+
+.Toggle {
+
+}
+
+.Toggle:hover {
+    background-color: rgb(44, 93, 135);
+}
