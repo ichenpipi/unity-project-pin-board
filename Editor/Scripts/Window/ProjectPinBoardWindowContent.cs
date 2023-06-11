@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -209,6 +209,24 @@ namespace ChenPipi.ProjectPinBoard
             {
                 ClearPreview();
             }
+        }
+
+        /// <summary>
+        /// 获取选中的条目信息
+        /// </summary>
+        /// <returns></returns>
+        private ItemInfo[] GetSelectedItemInfos()
+        {
+            return m_ListView.selectedItems.Select(o => (ItemInfo)o).ToArray();
+        }
+
+        /// <summary>
+        /// 获取选中的条目GUID列表
+        /// </summary>
+        /// <returns></returns>
+        private string[] GetSelectedItemGUIDs()
+        {
+            return m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
         }
 
     }

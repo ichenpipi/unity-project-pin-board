@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -18,16 +18,18 @@ namespace ChenPipi.ProjectPinBoard
         [MenuItem(k_WindowMenuName)]
         private static void WindowMenu_Open()
         {
-            ProjectPinBoardManager.Open();
+            ProjectPinBoardManager.Open(true);
         }
 
         #endregion
 
         #region Assets Menu
 
+        private const string k_AssetsMenuPath = @"Assets/" + k_MenuName + "/";
+
         private const int k_AssetsMenuPriority = 5;
 
-        private const string k_AssetsMenuPath = @"Assets/" + k_MenuName + "/";
+        private const int k_AssetsMenuPriority2 = 25;
 
         [MenuItem(k_AssetsMenuPath + "Pin 📌", false, k_AssetsMenuPriority)]
         private static void AssetsMenu_Pin()
@@ -35,10 +37,16 @@ namespace ChenPipi.ProjectPinBoard
             ProjectPinBoardManager.Pin(Selection.assetGUIDs);
         }
 
-        [MenuItem(k_AssetsMenuPath + "Open Window", false, k_AssetsMenuPriority)]
+        [MenuItem(k_AssetsMenuPath + "Open Window", false, k_AssetsMenuPriority2)]
         private static void AssetsMenu_Open()
         {
             ProjectPinBoardManager.Open();
+        }
+
+        [MenuItem(k_AssetsMenuPath + "Reopen Window", false, k_AssetsMenuPriority2)]
+        private static void AssetsMenu_Reopen()
+        {
+            ProjectPinBoardManager.Open(true);
         }
 
         #endregion

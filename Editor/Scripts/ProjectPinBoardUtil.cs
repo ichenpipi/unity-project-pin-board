@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>

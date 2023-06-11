@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     public static class ListExtension

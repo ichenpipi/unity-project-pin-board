@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -29,17 +29,19 @@ namespace ChenPipi.ProjectPinBoard
                 if (s_UserData == null)
                 {
                     s_UserData = GetLocal();
-                    GenerateCache();
+                    GenerateMapping();
                 }
                 return s_UserData;
             }
         }
 
+        #region Items
+
         public static List<ItemInfo> items => userData.items;
 
         private static readonly Dictionary<string, ItemInfo> s_Guid2Item = new Dictionary<string, ItemInfo>();
 
-        private static void GenerateCache()
+        private static void GenerateMapping()
         {
             s_Guid2Item.Clear();
             foreach (ItemInfo item in items)
@@ -88,6 +90,8 @@ namespace ChenPipi.ProjectPinBoard
             return s_Guid2Item.TryGetValue(guid, out ItemInfo _);
         }
 
+        #endregion
+
         /// <summary>
         /// 保存到本地
         /// </summary>
@@ -102,7 +106,7 @@ namespace ChenPipi.ProjectPinBoard
         public static void Reload()
         {
             s_UserData = GetLocal();
-            GenerateCache();
+            GenerateMapping();
         }
 
         /// <summary>

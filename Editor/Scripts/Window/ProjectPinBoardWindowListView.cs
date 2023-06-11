@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UIElements;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -69,6 +69,8 @@ namespace ChenPipi.ProjectPinBoard
             if (ProjectPinBoardSettings.syncSelection)
             {
                 ProjectPinBoardUtil.SelectAsset(first.guid);
+                // 夺回焦点
+                this.Focus();
             }
         }
 
@@ -85,12 +87,16 @@ namespace ChenPipi.ProjectPinBoard
             }
             ItemInfo info = (ItemInfo)infos.First();
             string guid = info.guid;
-            // 选中资源
-            ProjectPinBoardUtil.FocusOnAsset(guid);
-            // 打开资源
+            // 是否可以打开
             if (ProjectPinBoardUtil.CanOpenInEditor(guid) || ProjectPinBoardUtil.CanOpenInScriptEditor(guid))
             {
+                // 打开资源
                 ProjectPinBoardUtil.OpenAsset(guid);
+            }
+            else
+            {
+                // 选中资源
+                ProjectPinBoardUtil.FocusOnAsset(guid);
             }
         }
 

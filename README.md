@@ -6,7 +6,7 @@ _Easy peasy, lemon squeezy!_
 
 ## Installation
 
-Download and put the **Whole Project** (or just _ProjectPinBoard_ folder) in your project's Assets folder (or any subfolder would be ok).
+Download and put the **Whole Project** in your project's Assets folder (or any subfolder would be ok).
 
 ## Usage
 
@@ -52,9 +52,41 @@ These are options on **Right-click Menu**:
 
 One more thing:
 
-1. You can drag asset(s) from the **Project Pin Board** window into the Hierarchy window, just like you can do in the Project window.
+1. You can drag asset(s) from the **Project Pin Board** window into the Hierarchy/Scene window, just like you can do in the Project window.
+
+## Screenshots
+
+![image-001.png](Screenshots~/image-001.png)
+
+![image-002.png](Screenshots~/image-002.png)
+
+![image-003.png](Screenshots~/image-003.png)
+
+![image-004.png](Screenshots~/image-004.png)
+
+![image-005.png](Screenshots~/image-005.png)
+
+![image-006.png](Screenshots~/image-006.png)
+
+![gif-001.png](Screenshots~/gif-001.gif)
+
+![gif-002.png](Screenshots~/gif-002.gif)
+
+![gif-003.png](Screenshots~/gif-003.gif)
+
+![gif-004.png](Screenshots~/gif-004.gif)
+
+![gif-005.png](Screenshots~/gif-005.gif)
+
+![gif-006.png](Screenshots~/gif-006.gif)
 
 ## Compatibility
+
+This plugin is compatible with the following versions of the Unity Editor:
+
+- 2020.2 and later
+
+### Testing details
 
 | Unity Version     | Tested | Note |
 |-------------------|--------|------|
@@ -63,12 +95,13 @@ One more thing:
 | Unity 2021.3.8f1  | ✔️     |      |
 | Unity 2021.3.15f1 | ✔️     |      |
 | Unity 2021.3.22f1 | ✔️     |      |
+| Unity 2021.3.27f1 | ✔️     |      |
 
 ## Dependencies
 
-| Package  | Version        | Note |
-|----------|----------------|------|
-| Unity UI | 1.0.0 or above |      |
+| Package | Version | Note |
+|---------|---------|------|
+| None    | None    |      |
 
 ## License
 

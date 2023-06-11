@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -13,12 +13,13 @@ namespace ChenPipi.ProjectPinBoard
 
         #region Window
 
-        public static void Open()
+        public static void Open(bool forceReopen = false)
         {
-            if (ProjectPinBoardWindow.HasOpenInstances())
+            if (!forceReopen && ProjectPinBoardWindow.HasOpenInstances())
             {
-                ProjectPinBoardWindow window = ProjectPinBoardWindow.GetInstance();
+                ProjectPinBoardWindow window = ProjectPinBoardWindow.GetOpenedInstance();
                 window.Show(true);
+                window.Focus();
             }
             else
             {
@@ -167,8 +168,8 @@ namespace ChenPipi.ProjectPinBoard
             if (value.IndexOfAny(s_InvalidDisplayNameChars) != -1)
             {
                 EditorUtility.DisplayDialog(
-                    "Invalid Name!",
-                    $"A file name can't contain any of the following characters: {s_InvalidDisplayNameChars.Join("")}",
+                    "[Project Pin Board] Invalid display name",
+                    $"A display name can't contain any of the following characters: {s_InvalidDisplayNameChars.Join("")}",
                     "OK"
                 );
                 return false;
@@ -184,7 +185,7 @@ namespace ChenPipi.ProjectPinBoard
         /// 清除显示名称
         /// </summary>
         /// <param name="guid"></param>
-        public static void ClearDisplayName(string guid)
+        public static void RemoveDisplayName(string guid)
         {
             ItemInfo item = ProjectPinBoardData.GetItem(guid);
             if (item == null) return;
@@ -215,7 +216,7 @@ namespace ChenPipi.ProjectPinBoard
                 if (showTips)
                 {
                     EditorUtility.DisplayDialog(
-                        "Invalid tag name!",
+                        "[Project Pin Board] Invalid tag name",
                         $"A tag name can't contain any of the following characters: {s_InvalidTagNameChars.Join()}",
                         "OK"
                     );
@@ -244,7 +245,7 @@ namespace ChenPipi.ProjectPinBoard
         /// 清除标签
         /// </summary>
         /// <param name="guid"></param>
-        public static void ClearTags(string guid)
+        public static void RemoveTags(string guid)
         {
             ItemInfo item = ProjectPinBoardData.GetItem(guid);
             if (item == null) return;

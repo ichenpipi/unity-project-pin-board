@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -36,10 +36,10 @@ namespace ChenPipi.ProjectPinBoard
         }
 
         /// <summary>
-        /// 获取窗口实例
+        /// 获取已打开的窗口实例
         /// </summary>
         /// <returns></returns>
-        public static ProjectPinBoardWindow GetInstance()
+        public static ProjectPinBoardWindow GetOpenedInstance()
         {
             return HasOpenInstances() ? GetWindow<ProjectPinBoardWindow>() : null;
         }
@@ -50,7 +50,14 @@ namespace ChenPipi.ProjectPinBoard
         /// <returns></returns>
         public static ProjectPinBoardWindow CreateInstance()
         {
-            ProjectPinBoardWindow window = CreateWindow<ProjectPinBoardWindow>();
+            // 销毁已存在的实例
+            ProjectPinBoardWindow window = GetOpenedInstance();
+            if (window != null)
+            {
+                window.Close();
+            }
+            // 创建新的的实例
+            window = CreateWindow<ProjectPinBoardWindow>();
             window.titleContent = new GUIContent()
             {
                 text = "Project Pin Board",
@@ -100,15 +107,15 @@ namespace ChenPipi.ProjectPinBoard
             menu.AddItem(new GUIContent("Reload"), false, Menu_Reload);
             menu.AddItem(new GUIContent("Show Serialized Data File"), false, Menu_ShowSerializedDataFile);
             menu.AddItem(new GUIContent("Show Serialized Settings File"), false, Menu_ShowSerializedSettingsFile);
-            menu.AddItem(new GUIContent("Clear Data"), false, Menu_ClearData);
-            menu.AddItem(new GUIContent("Reset Settings"), false, Menu_ResetSettings);
+            menu.AddSeparator(string.Empty);
+            menu.AddItem(new GUIContent("Clear Data ⚠️"), false, Menu_ClearData);
+            menu.AddItem(new GUIContent("Reset Settings ⚠️"), false, Menu_ResetSettings);
         }
 
         private void Menu_Reload()
         {
             ProjectPinBoardManager.ReloadData();
             ProjectPinBoardManager.ReloadSettings();
-            // 应用设置
             ApplySettings();
         }
 
@@ -124,17 +131,18 @@ namespace ChenPipi.ProjectPinBoard
 
         private void Menu_ClearData()
         {
-            bool isOk = EditorUtility.DisplayDialog("Clear Pin Board Data", "Are you sure to clear the data?", "Confirm", "Cancel");
-            if (isOk)
-            {
-                ProjectPinBoardManager.ClearData();
-            }
+            bool isOk = EditorUtility.DisplayDialog(
+                "[Project Pin Board] Clear Data",
+                "Are you sure to clear the data? This operation cannot be undone!",
+                "Confirm!",
+                "Cancel"
+            );
+            if (isOk) ProjectPinBoardManager.ClearData();
         }
 
         private void Menu_ResetSettings()
         {
             ProjectPinBoardManager.ResetSettings();
-            // 应用设置
             ApplySettings();
         }
 
@@ -215,24 +223,14 @@ namespace ChenPipi.ProjectPinBoard
         }
 
         /// <summary>
-        /// 排序菜单显示名称
-        /// </summary>
-        private static class SortingMenuName
-        {
-            public const string NameUp = "Name ↑";
-            public const string NameDown = "Name ↓";
-            public const string TimeUp = "Pin Time ↑";
-            public const string TimeDown = "Pin Time ↓";
-        }
-
-        /// <summary>
         /// 排序优先级
         /// </summary>
         private static class SortingPriority
         {
-            public const int Directory = 10;
-            public const int Top = 5;
+            public const int Directory = 20;
+            public const int Top = 10;
             public const int Base = 0;
+            public const int Invalid = -1;
         }
 
         /// <summary>
@@ -242,13 +240,18 @@ namespace ChenPipi.ProjectPinBoard
         {
             int ap = SortingPriority.Base;
             int bp = SortingPriority.Base;
+            // 是否置顶文件夹
             if (ProjectPinBoardSettings.topFolder)
             {
                 if (a.IsDirectory()) ap += SortingPriority.Directory;
                 if (b.IsDirectory()) bp += SortingPriority.Directory;
             }
+            // 是否置顶
             if (a.top) ap += SortingPriority.Top;
             if (b.top) bp += SortingPriority.Top;
+            // 是否为有效资源
+            if (!a.IsValid()) ap += SortingPriority.Invalid;
+            if (!b.IsValid()) bp += SortingPriority.Invalid;
             return bp - ap;
         };
 
@@ -261,8 +264,7 @@ namespace ChenPipi.ProjectPinBoard
                 Sorting.NameUp, (a, b) =>
                 {
                     int baseSorting = s_BaseSortingComparer(a, b);
-                    if (baseSorting != 0) return baseSorting;
-                    return string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase);
+                    return baseSorting != 0 ? baseSorting : string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase);
                 }
             },
             {
@@ -295,6 +297,16 @@ namespace ChenPipi.ProjectPinBoard
         /// 当前排序类型
         /// </summary>
         private Sorting m_Sorting = Sorting.NameUp;
+
+        /// <summary>
+        /// 切换排序
+        /// </summary>
+        /// <param name="sorting"></param>
+        private void SwitchSorting(Sorting sorting)
+        {
+            m_Sorting = sorting;
+            UpdateContent();
+        }
 
         /// <summary>
         /// 排序

@@ -1,6 +1,6 @@
 using System;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace ChenPipi.ProjectPinBoard
             public bool topFolder = true;
             public bool enablePreview = true;
             public float dragLinePos = 250f;
-            public bool syncSelection = true;
+            public bool syncSelection = false;
         }
 
         private static Settings s_Settings;

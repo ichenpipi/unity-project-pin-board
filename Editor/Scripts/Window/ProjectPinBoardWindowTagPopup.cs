@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEngine.UIElements.PopupWindow;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -53,8 +53,8 @@ namespace ChenPipi.ProjectPinBoard
         /// <summary>
         /// 展示标签窗口
         /// </summary>
-        /// <param name="itemInfo"></param>
-        private void ShowTagPopup(ItemInfo itemInfo)
+        /// <param name="itemInfos"></param>
+        private void ShowTagPopup(ItemInfo[] itemInfos)
         {
             // 创建底部遮罩
             if (m_TagPopupMask == null)
@@ -384,23 +384,24 @@ namespace ChenPipi.ProjectPinBoard
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // 获取当前条目信息
-            ItemInfo GetItemInfo()
+            // 获取当前编辑的条目信息
+            ItemInfo[] GetEditingItemInfos()
             {
-                return (ItemInfo)m_TagPopupWindow.userData;
+                return (ItemInfo[])m_TagPopupWindow.userData;
             }
 
-            // 获取当前标签
-            List<string> GetItemTags()
+            // 获取当前选择的条目标签
+            List<string> GetSelectedItemTags()
             {
                 return (List<string>)m_TagPopupWindow.Q<Box>("ItemTags").userData;
             }
 
             // 设置标题
-            void SetTitle(string text)
+            void SetTitle(string text, string tooltip = "")
             {
                 Label titleLabel = m_TagPopupWindow.Q<Label>("Title");
                 titleLabel.text = text;
+                titleLabel.tooltip = tooltip;
             }
 
             // 刷新所有标签元素
@@ -492,9 +493,11 @@ namespace ChenPipi.ProjectPinBoard
             // 确认按钮回调
             void OnConfirmButtonClick()
             {
-                string guid = GetItemInfo().guid;
-                List<string> itemTags = GetItemTags();
-                ProjectPinBoardManager.SetTags(guid, itemTags);
+                List<string> itemTags = GetSelectedItemTags();
+                foreach (ItemInfo itemInfo in GetEditingItemInfos())
+                {
+                    ProjectPinBoardManager.SetTags(itemInfo.guid, itemTags);
+                }
                 CloseTagPopup();
             }
 
@@ -564,16 +567,24 @@ namespace ChenPipi.ProjectPinBoard
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // 保存条目信息引用
-            m_TagPopupWindow.userData = itemInfo;
+            m_TagPopupWindow.userData = itemInfos;
 
             // 更新标题
-            SetTitle($"Set tag(s) of \"{itemInfo.AssetName}\"");
+            if (itemInfos.Length == 1)
+            {
+                SetTitle($"Set tag(s) of \"{itemInfos[0].AssetName}\"", itemInfos[0].AssetName);
+            }
+            else
+            {
+                string tooltip = itemInfos.Select(o => $"- {o.AssetName}").ToArray().Join("\n");
+                SetTitle($"Set tag(s) of items...", tooltip);
+            }
 
             // 刷新所有标签
             RefreshAllTagsContainer(m_ItemTagList);
 
             // 刷新当前条目标签
-            RefreshItemTagsContainer(itemInfo.tags);
+            RefreshItemTagsContainer(itemInfos.Length == 1 ? itemInfos[0].tags : new List<string>());
 
             // 清空标签输入
             SetTagTextFieldValue(string.Empty);

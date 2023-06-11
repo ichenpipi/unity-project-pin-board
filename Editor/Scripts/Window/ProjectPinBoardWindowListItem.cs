@@ -2,8 +2,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -57,7 +58,7 @@ namespace ChenPipi.ProjectPinBoard
 
             /// <summary>
             /// 显示名称附加后缀
-            /// <summary>
+            /// </summary>
             private const string k_DisplayNameSuffix = "^";
 
             public ListItem()
@@ -240,6 +241,7 @@ namespace ChenPipi.ProjectPinBoard
                             marginBottom = 1,
                             marginLeft = 0,
                             marginRight = 1,
+                            minWidth = 100,
                         },
                     };
                     three.Add(nameTextField);
@@ -327,13 +329,13 @@ namespace ChenPipi.ProjectPinBoard
             /// </summary>
             public void ShowNameTextField()
             {
-                if (userData == null) return;
-                if (isShowingNameTextField) return;
+                if ((userData == null) || isShowingNameTextField) return;
                 // 切换状态
                 nameLabel.style.display = DisplayStyle.None;
                 nameTextField.style.display = DisplayStyle.Flex;
                 // 设置初始文本
                 nameTextField.value = userData.Name;
+                nameTextField.tooltip = userData.Name;
                 // 聚焦并选中文本
                 nameTextField.Focus();
                 nameTextField.SelectAll();
@@ -373,7 +375,7 @@ namespace ChenPipi.ProjectPinBoard
                 string input = nameTextField.value;
                 if (string.IsNullOrWhiteSpace(input) || input == userData.AssetName)
                 {
-                    ProjectPinBoardManager.ClearDisplayName(userData.guid);
+                    ProjectPinBoardManager.RemoveDisplayName(userData.guid);
                     HideNameTextField();
                     return;
                 }
@@ -432,7 +434,7 @@ namespace ChenPipi.ProjectPinBoard
                     m_GotMouseDown = false;
                     if (HasOpenInstances())
                     {
-                        ProjectPinBoardWindow window = GetInstance();
+                        ProjectPinBoardWindow window = GetOpenedInstance();
                         window.TriggerDragging();
                     }
                 }
@@ -550,7 +552,7 @@ namespace ChenPipi.ProjectPinBoard
         /// <summary>
         /// 条目菜单名称
         /// </summary>
-        private static class ListItemMenuName
+        private static class ListItemMenuItemName
         {
             public const string Select = "Select";
             public const string Open = "Open";
@@ -560,10 +562,10 @@ namespace ChenPipi.ProjectPinBoard
             public const string RePin = "Re-pin (Update pin time)";
             public const string Unpin = "Unpin";
             public const string SetDisplayName = "Set Display Name";
-            public const string SetDisplayNameAsPath = "Set Display Name As Path";
-            public const string ClearDisplayName = "Clear Display Name";
+            public const string SetDisplayNameToPath = "Set Display Name to Path";
+            public const string RemoveDisplayName = "Remove Display Name";
             public const string SetTags = "Set Tag(s)";
-            public const string ClearTags = "Clear Tag(s)";
+            public const string RemoveTags = "Remove Tag(s)";
         }
 
         /// <summary>
@@ -574,22 +576,22 @@ namespace ChenPipi.ProjectPinBoard
         {
             object listItem = evt.target;
             DropdownMenu menu = evt.menu;
-            menu.AppendAction(ListItemMenuName.Select, OnItemMenuAction, EnabledOnSingleSelection, listItem);
-            menu.AppendAction(ListItemMenuName.Open, OnItemMenuAction, EnabledOnSingleSelection, listItem);
-            menu.AppendAction(ListItemMenuName.ShowInExplorer, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.Select, OnItemMenuAction, EnabledOnSingleSelection, listItem);
+            menu.AppendAction(ListItemMenuItemName.Open, OnItemMenuAction, EnabledOnSingleSelection, listItem);
+            menu.AppendAction(ListItemMenuItemName.ShowInExplorer, OnItemMenuAction, AlwaysEnabled, listItem);
             menu.AppendSeparator();
-            menu.AppendAction(ListItemMenuName.RePin, OnItemMenuAction, AlwaysEnabled, listItem);
-            menu.AppendAction(ListItemMenuName.Unpin, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.RePin, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.Unpin, OnItemMenuAction, AlwaysEnabled, listItem);
             menu.AppendSeparator();
-            menu.AppendAction(ListItemMenuName.Top, OnItemMenuAction, AlwaysEnabled, listItem);
-            menu.AppendAction(ListItemMenuName.UnTop, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.Top, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.UnTop, OnItemMenuAction, AlwaysEnabled, listItem);
             menu.AppendSeparator();
-            menu.AppendAction(ListItemMenuName.SetDisplayName, OnItemMenuAction, EnabledOnSingleSelection, listItem);
-            menu.AppendAction(ListItemMenuName.SetDisplayNameAsPath, OnItemMenuAction, AlwaysEnabled, listItem);
-            menu.AppendAction(ListItemMenuName.ClearDisplayName, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.SetDisplayName, OnItemMenuAction, EnabledOnSingleSelection, listItem);
+            menu.AppendAction(ListItemMenuItemName.SetDisplayNameToPath, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.RemoveDisplayName, OnItemMenuAction, AlwaysEnabled, listItem);
             menu.AppendSeparator();
-            menu.AppendAction(ListItemMenuName.SetTags, OnItemMenuAction, EnabledOnSingleSelection, listItem);
-            menu.AppendAction(ListItemMenuName.ClearTags, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.SetTags, OnItemMenuAction, AlwaysEnabled, listItem);
+            menu.AppendAction(ListItemMenuItemName.RemoveTags, OnItemMenuAction, AlwaysEnabled, listItem);
             menu.AppendSeparator();
 
             DropdownMenuAction.Status AlwaysEnabled(DropdownMenuAction a) => DropdownMenuAction.AlwaysEnabled(a);
@@ -612,87 +614,78 @@ namespace ChenPipi.ProjectPinBoard
             }
             switch (action.name)
             {
-                case ListItemMenuName.Select:
+                case ListItemMenuItemName.Select:
                 {
                     ItemInfo itemInfo = item.userData;
                     ProjectPinBoardUtil.FocusOnAsset(itemInfo.guid);
                     break;
                 }
-                case ListItemMenuName.Open:
+                case ListItemMenuItemName.Open:
                 {
                     ItemInfo itemInfo = item.userData;
                     ProjectPinBoardUtil.OpenAsset(itemInfo.guid);
                     break;
                 }
-                case ListItemMenuName.ShowInExplorer:
+                case ListItemMenuItemName.ShowInExplorer:
                 {
-                    object[] itemInfos = m_ListView.selectedItems.ToArray();
-                    foreach (ItemInfo itemInfo in itemInfos)
+                    foreach (ItemInfo itemInfo in GetSelectedItemInfos())
                     {
                         ProjectPinBoardUtil.ShowInExplorer(itemInfo.guid);
                     }
                     break;
                 }
-                case ListItemMenuName.RePin:
+                case ListItemMenuItemName.RePin:
                 {
-                    string[] guids = m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
-                    ProjectPinBoardManager.Pin(guids);
+                    ProjectPinBoardManager.Pin(GetSelectedItemGUIDs());
                     break;
                 }
-                case ListItemMenuName.Unpin:
+                case ListItemMenuItemName.Unpin:
                 {
-                    string[] guids = m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
-                    ProjectPinBoardManager.Unpin(guids);
+                    ProjectPinBoardManager.Unpin(GetSelectedItemGUIDs());
                     break;
                 }
-                case ListItemMenuName.Top:
+                case ListItemMenuItemName.Top:
                 {
-                    string[] guids = m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
-                    ProjectPinBoardManager.Top(guids, true);
+                    ProjectPinBoardManager.Top(GetSelectedItemGUIDs(), true);
                     break;
                 }
-                case ListItemMenuName.UnTop:
+                case ListItemMenuItemName.UnTop:
                 {
-                    string[] guids = m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
-                    ProjectPinBoardManager.Top(guids, false);
+                    ProjectPinBoardManager.Top(GetSelectedItemGUIDs(), false);
                     break;
                 }
-                case ListItemMenuName.SetDisplayName:
+                case ListItemMenuItemName.SetDisplayName:
                 {
                     item.ShowNameTextField();
                     break;
                 }
-                case ListItemMenuName.SetDisplayNameAsPath:
+                case ListItemMenuItemName.SetDisplayNameToPath:
                 {
-                    object[] itemInfos = m_ListView.selectedItems.ToArray();
-                    foreach (ItemInfo itemInfo in itemInfos)
+                    foreach (ItemInfo itemInfo in GetSelectedItemInfos())
                     {
                         string path = itemInfo.Path.Replace("Assets/", "");
                         ProjectPinBoardManager.SetDisplayName(itemInfo.guid, path);
                     }
                     break;
                 }
-                case ListItemMenuName.ClearDisplayName:
+                case ListItemMenuItemName.RemoveDisplayName:
                 {
-                    object[] itemInfos = m_ListView.selectedItems.ToArray();
-                    foreach (ItemInfo itemInfo in itemInfos)
+                    foreach (ItemInfo itemInfo in GetSelectedItemInfos())
                     {
-                        ProjectPinBoardManager.ClearDisplayName(itemInfo.guid);
+                        ProjectPinBoardManager.RemoveDisplayName(itemInfo.guid);
                     }
                     break;
                 }
-                case ListItemMenuName.SetTags:
+                case ListItemMenuItemName.SetTags:
                 {
-                    ItemInfo itemInfo = item.userData;
-                    ShowTagPopup(itemInfo);
+                    ShowTagPopup(GetSelectedItemInfos());
                     break;
                 }
-                case ListItemMenuName.ClearTags:
+                case ListItemMenuItemName.RemoveTags:
                 {
-                    object[] itemInfos = m_ListView.selectedItems.ToArray();
-                    foreach (ItemInfo itemInfo in itemInfos)
+                    foreach (ItemInfo itemInfo in GetSelectedItemInfos())
                     {
-                        ProjectPinBoardManager.ClearTags(itemInfo.guid);
+                        ProjectPinBoardManager.RemoveTags(itemInfo.guid);
                     }
                     break;
                 }

@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ChenPipi.ProjectPinBoard
+namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
@@ -277,10 +278,10 @@ namespace ChenPipi.ProjectPinBoard
                 text.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
                 // 下拉菜单
                 DropdownMenu menu = sortingMenu.menu;
-                menu.AppendAction(SortingMenuName.NameUp, OnSortingMenuAction, GetSortingMenuActionStatus);
-                menu.AppendAction(SortingMenuName.NameDown, OnSortingMenuAction, GetSortingMenuActionStatus);
-                menu.AppendAction(SortingMenuName.TimeUp, OnSortingMenuAction, GetSortingMenuActionStatus);
-                menu.AppendAction(SortingMenuName.TimeDown, OnSortingMenuAction, GetSortingMenuActionStatus);
+                foreach (var item in s_SortingMenuMap)
+                {
+                    menu.AppendAction(item.Key, OnSortingMenuAction, GetSortingMenuActionStatus);
+                }
             }
         }
 
@@ -334,14 +335,15 @@ namespace ChenPipi.ProjectPinBoard
         #region Sorting Menu
 
         /// <summary>
-        /// 切换排序
+        /// 排序菜单表
         /// </summary>
-        /// <param name="newSorting"></param>
-        private void SwitchSorting(Sorting newSorting)
+        private static readonly Dictionary<string, Sorting> s_SortingMenuMap = new Dictionary<string, Sorting>()
         {
-            m_Sorting = newSorting;
-            UpdateContent();
-        }
+            { "Name ↑", Sorting.NameUp },
+            { "Name ↓", Sorting.NameDown },
+            { "Pin Time ↑", Sorting.TimeUp },
+            { "Pin Time ↓", Sorting.TimeDown },
+        };
 
         /// <summary>
         /// 排序菜单行为回调
@@ -349,28 +351,9 @@ namespace ChenPipi.ProjectPinBoard
         /// <param name="action"></param>
         private void OnSortingMenuAction(DropdownMenuAction action)
         {
-            switch (action.name)
+            if (s_SortingMenuMap.TryGetValue(action.name, out Sorting value))
             {
-                case SortingMenuName.NameUp:
-                {
-                    SwitchSorting(Sorting.NameUp);
-                    break;
-                }
-                case SortingMenuName.NameDown:
-                {
-                    SwitchSorting(Sorting.NameDown);
-                    break;
-                }
-                case SortingMenuName.TimeUp:
-                {
-                    SwitchSorting(Sorting.TimeUp);
-                    break;
-                }
-                case SortingMenuName.TimeDown:
-                {
-                    SwitchSorting(Sorting.TimeDown);
-                    break;
-                }
+                SwitchSorting(value);
             }
         }
 
@@ -381,14 +364,11 @@ namespace ChenPipi.ProjectPinBoard
         /// <returns></returns>
         private DropdownMenuAction.Status GetSortingMenuActionStatus(DropdownMenuAction action)
         {
-            return action.name switch
+            if (s_SortingMenuMap.TryGetValue(action.name, out Sorting value))
             {
-                SortingMenuName.NameUp => m_Sorting == Sorting.NameUp ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal,
-                SortingMenuName.NameDown => m_Sorting == Sorting.NameDown ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal,
-                SortingMenuName.TimeUp => m_Sorting == Sorting.TimeUp ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal,
-                SortingMenuName.TimeDown => m_Sorting == Sorting.TimeDown ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal,
-                _ => DropdownMenuAction.Status.Disabled
-            };
+                return (m_Sorting == value ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal);
+            }
+            return DropdownMenuAction.Status.Disabled;
         }
 
         #endregion
