@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -112,18 +113,32 @@ namespace ChenPipi.ProjectPinBoard.Editor
             ".css", ".html", ".vue", ".jsx",
         };
 
+        /// <summary>
+        /// 是否能在Unity编辑器中打开
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         internal static bool CanOpenInEditor(string guid)
         {
             string extname = GetAssetExtname(guid);
             return s_OpenInEditorIncludeList.Contains(extname);
         }
 
+        /// <summary>
+        /// 是否能在脚本编辑器中打开
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         internal static bool CanOpenInScriptEditor(string guid)
         {
             string extname = GetAssetExtname(guid);
             return s_OpenInScriptEditorIncludeList.Contains(extname);
         }
 
+        /// <summary>
+        /// 选中资源
+        /// </summary>
+        /// <param name="guid"></param>
         internal static void SelectAsset(string guid)
         {
             Object asset = GUIDToAsset(guid);
@@ -132,6 +147,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
             Selection.activeObject = asset;
         }
 
+        /// <summary>
+        /// 高亮资源
+        /// </summary>
+        /// <param name="guid"></param>
         internal static void PingAsset(string guid)
         {
             Object asset = GUIDToAsset(guid);
@@ -140,20 +159,54 @@ namespace ChenPipi.ProjectPinBoard.Editor
             EditorGUIUtility.PingObject(asset);
         }
 
+        /// <summary>
+        /// 聚焦到资源
+        /// </summary>
+        /// <param name="guid"></param>
         internal static void FocusOnAsset(string guid)
         {
             Object asset = GUIDToAsset(guid);
             if (!asset) return;
+
             EditorUtility.FocusProjectWindow();
-            Selection.activeObject = asset;
-            EditorApplication.delayCall += () => EditorGUIUtility.PingObject(asset);
+
+            if (IsFolder(guid))
+            {
+                ShowFolderContents(guid);
+            }
+            else
+            {
+                Selection.activeObject = asset;
+                EditorApplication.delayCall += () => EditorGUIUtility.PingObject(asset);
+            }
         }
 
+        /// <summary>
+        /// 打开资源
+        /// </summary>
+        /// <param name="guid"></param>
         internal static void OpenAsset(string guid)
         {
             Object asset = GUIDToAsset(guid);
             if (!asset) return;
             AssetDatabase.OpenAsset(asset);
+        }
+
+        /// <summary>
+        /// 展示文件夹内容
+        /// </summary>
+        /// <param name="guid"></param>
+        internal static void ShowFolderContents(string guid)
+        {
+            Object asset = GUIDToAsset(guid);
+            if (!asset) return;
+
+            Type projectBrowserType = Type.GetType("UnityEditor.ProjectBrowser,UnityEditor");
+            MethodInfo showFolderContentsMethod = projectBrowserType!.GetMethod("ShowFolderContents", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo instanceField = projectBrowserType!.GetField("s_LastInteractedProjectBrowser", BindingFlags.Static | BindingFlags.Public);
+
+            object projectBrowser = instanceField!.GetValue(null);
+            showFolderContentsMethod?.Invoke(projectBrowser, new object[] { asset.GetInstanceID(), true });
         }
 
         /// <summary>
