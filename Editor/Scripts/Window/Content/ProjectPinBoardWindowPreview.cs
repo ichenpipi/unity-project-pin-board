@@ -13,128 +13,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
     public partial class ProjectPinBoardWindow
     {
 
-        /// <summary>
-        /// 开关预览
-        /// </summary>
-        /// <param name="enable"></param>
-        public void TogglePreview(bool enable)
-        {
-            if (enable)
-            {
-                // 检查预览区域宽度
-                float rootWidth = rootVisualElement.worldBound.width;
-                float previewMinWidth = m_PreviewPane.style.minWidth.value.value;
-                if (ProjectPinBoardSettings.dragLinePos > rootWidth - previewMinWidth)
-                {
-                    m_ContentSplitView.fixedPaneInitialDimension = rootWidth - previewMinWidth;
-                }
-                else
-                {
-                    m_ContentSplitView.fixedPaneInitialDimension = ProjectPinBoardSettings.dragLinePos;
-                }
-                // 取消折叠
-                m_ContentSplitView.UnCollapse();
-            }
-            else
-            {
-                // 折叠预览区域
-                m_ContentSplitView.CollapseChild(1);
-            }
-        }
-
-        /// <summary>
-        /// 清除预览
-        /// </summary>
-        public void ClearPreview()
-        {
-            m_PreviewPane.userData = null;
-
-            m_PreviewPlaceholder.style.display = DisplayStyle.Flex;
-            m_PreviewScrollView.style.display = DisplayStyle.None;
-
-            m_PreviewIcon.image = null;
-            m_PreviewName.text = string.Empty;
-            m_PreviewDisplayName.text = string.Empty;
-            m_PreviewDisplayName.style.display = DisplayStyle.None;
-
-            m_PreviewGuidItem.titleLabel.text = string.Empty;
-            m_PreviewGuidItem.contentLabel.text = string.Empty;
-
-            m_PreviewTypeItem.titleLabel.text = string.Empty;
-            m_PreviewTypeItem.contentLabel.text = string.Empty;
-
-            m_PreviewAssetBundleItem.titleLabel.text = string.Empty;
-            m_PreviewAssetBundleItem.contentLabel.text = string.Empty;
-
-            m_PreviewPathItem.titleLabel.text = string.Empty;
-            m_PreviewPathItem.contentLabel.text = string.Empty;
-
-            m_PreviewTagContainer.Clear();
-
-            m_PreviewFloatingButtonContainer.style.display = DisplayStyle.None;
-        }
-
-        /// <summary>
-        /// 设置预览
-        /// </summary>
-        /// <param name="itemInfo"></param>
-        private void SetPreview(ItemInfo itemInfo)
-        {
-            if (itemInfo == null)
-            {
-                ClearPreview();
-                return;
-            }
-
-            // 保存数据
-            m_PreviewPane.userData = itemInfo;
-            // 隐藏占位，展示滚动视图
-            m_PreviewPlaceholder.style.display = DisplayStyle.None;
-            m_PreviewScrollView.style.display = DisplayStyle.Flex;
-
-            // 资源信息
-            string path = itemInfo.Path;
-            Object asset = itemInfo.Asset;
-            // 图标
-            if (asset is Texture texture)
-            {
-                m_PreviewIcon.image = texture;
-            }
-            else
-            {
-                m_PreviewIcon.image = (asset ? AssetDatabase.GetCachedIcon(path) : ProjectPinBoardUtil.GetAssetIcon(path));
-            }
-            // 名称
-            m_PreviewName.text = (asset ? asset.name : "<Missing Asset>");
-            // 展示名称
-            string displayName = itemInfo.displayName;
-            m_PreviewDisplayName.style.display = (string.IsNullOrWhiteSpace(displayName) ? DisplayStyle.None : DisplayStyle.Flex);
-            if (!string.IsNullOrWhiteSpace(displayName)) m_PreviewDisplayName.text = displayName;
-
-            // GUID
-            m_PreviewGuidItem.titleLabel.text = "GUID:";
-            m_PreviewGuidItem.contentLabel.text = itemInfo.guid;
-            // 类型
-            m_PreviewTypeItem.titleLabel.text = "Type:";
-            m_PreviewTypeItem.contentLabel.text = itemInfo.Type;
-            // AssetBundle
-            m_PreviewAssetBundleItem.titleLabel.text = "AssetBundle:";
-            m_PreviewAssetBundleItem.contentLabel.text = (asset ? (!string.IsNullOrEmpty(itemInfo.AssetBundle) ? itemInfo.AssetBundle : "<None>") : string.Empty);
-            // 路径
-            m_PreviewPathItem.titleLabel.text = "Path:";
-            m_PreviewPathItem.contentLabel.text = path;
-            // 标签
-            m_PreviewTagContainer.Clear();
-            foreach (string tag in itemInfo.tags)
-            {
-                m_PreviewTagContainer.Add(GenTagLabel(tag));
-            }
-
-            // 悬浮按钮
-            m_PreviewFloatingButtonContainer.style.display = DisplayStyle.Flex;
-        }
-
-        #region Initialization
+        #region Preview Initialization
 
         /// <summary>
         /// 预览面板
@@ -517,6 +396,131 @@ namespace ChenPipi.ProjectPinBoard.Editor
             if (m_PreviewPane.userData == null) return;
             ItemInfo itemInfo = (ItemInfo)m_PreviewPane.userData;
             ProjectPinBoardUtil.ShowInExplorer(itemInfo.guid);
+        }
+
+        #endregion
+
+        #region Preview Interface
+
+        /// <summary>
+        /// 开关预览
+        /// </summary>
+        /// <param name="enable"></param>
+        public void TogglePreview(bool enable)
+        {
+            if (enable)
+            {
+                // 检查预览区域宽度
+                float rootWidth = rootVisualElement.worldBound.width;
+                float previewMinWidth = m_PreviewPane.style.minWidth.value.value;
+                if (ProjectPinBoardSettings.dragLinePos > rootWidth - previewMinWidth)
+                {
+                    m_ContentSplitView.fixedPaneInitialDimension = rootWidth - previewMinWidth;
+                }
+                else
+                {
+                    m_ContentSplitView.fixedPaneInitialDimension = ProjectPinBoardSettings.dragLinePos;
+                }
+                // 取消折叠
+                m_ContentSplitView.UnCollapse();
+            }
+            else
+            {
+                // 折叠预览区域
+                m_ContentSplitView.CollapseChild(1);
+            }
+        }
+
+        /// <summary>
+        /// 清除预览
+        /// </summary>
+        public void ClearPreview()
+        {
+            m_PreviewPane.userData = null;
+
+            m_PreviewPlaceholder.style.display = DisplayStyle.Flex;
+            m_PreviewScrollView.style.display = DisplayStyle.None;
+
+            m_PreviewIcon.image = null;
+            m_PreviewName.text = string.Empty;
+            m_PreviewDisplayName.text = string.Empty;
+            m_PreviewDisplayName.style.display = DisplayStyle.None;
+
+            m_PreviewGuidItem.titleLabel.text = string.Empty;
+            m_PreviewGuidItem.contentLabel.text = string.Empty;
+
+            m_PreviewTypeItem.titleLabel.text = string.Empty;
+            m_PreviewTypeItem.contentLabel.text = string.Empty;
+
+            m_PreviewAssetBundleItem.titleLabel.text = string.Empty;
+            m_PreviewAssetBundleItem.contentLabel.text = string.Empty;
+
+            m_PreviewPathItem.titleLabel.text = string.Empty;
+            m_PreviewPathItem.contentLabel.text = string.Empty;
+
+            m_PreviewTagContainer.Clear();
+
+            m_PreviewFloatingButtonContainer.style.display = DisplayStyle.None;
+        }
+
+        /// <summary>
+        /// 设置预览
+        /// </summary>
+        /// <param name="itemInfo"></param>
+        private void SetPreview(ItemInfo itemInfo)
+        {
+            if (itemInfo == null)
+            {
+                ClearPreview();
+                return;
+            }
+
+            // 保存数据
+            m_PreviewPane.userData = itemInfo;
+            // 隐藏占位，展示滚动视图
+            m_PreviewPlaceholder.style.display = DisplayStyle.None;
+            m_PreviewScrollView.style.display = DisplayStyle.Flex;
+
+            // 资源信息
+            string path = itemInfo.Path;
+            Object asset = itemInfo.Asset;
+            // 图标
+            if (asset is Texture texture)
+            {
+                m_PreviewIcon.image = texture;
+            }
+            else
+            {
+                m_PreviewIcon.image = (asset ? AssetDatabase.GetCachedIcon(path) : ProjectPinBoardUtil.GetAssetIcon(path));
+            }
+            // 名称
+            m_PreviewName.text = (asset ? asset.name : "<Missing Asset>");
+            // 展示名称
+            string displayName = itemInfo.displayName;
+            m_PreviewDisplayName.style.display = (string.IsNullOrWhiteSpace(displayName) ? DisplayStyle.None : DisplayStyle.Flex);
+            if (!string.IsNullOrWhiteSpace(displayName)) m_PreviewDisplayName.text = displayName;
+
+            // GUID
+            m_PreviewGuidItem.titleLabel.text = "GUID:";
+            m_PreviewGuidItem.contentLabel.text = itemInfo.guid;
+            // 类型
+            m_PreviewTypeItem.titleLabel.text = "Type:";
+            m_PreviewTypeItem.contentLabel.text = itemInfo.Type;
+            // AssetBundle
+            m_PreviewAssetBundleItem.titleLabel.text = "AssetBundle:";
+            m_PreviewAssetBundleItem.contentLabel.text = (asset ? (!string.IsNullOrEmpty(itemInfo.AssetBundle) ? itemInfo.AssetBundle : "<None>") : string.Empty);
+            // 路径
+            m_PreviewPathItem.titleLabel.text = "Path:";
+            m_PreviewPathItem.contentLabel.text = path;
+            // 标签
+            m_PreviewTagContainer.Clear();
+            foreach (string tag in itemInfo.tags)
+            {
+                m_PreviewTagContainer.Add(GenTagLabel(tag));
+            }
+
+            // 悬浮按钮
+            m_PreviewFloatingButtonContainer.style.display = DisplayStyle.Flex;
         }
 
         #endregion

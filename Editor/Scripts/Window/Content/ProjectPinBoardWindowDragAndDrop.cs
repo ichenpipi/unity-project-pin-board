@@ -17,7 +17,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 拖拽标签
         /// </summary>
-        private const string k_DragAndDropGenericType = "PinBoardListItem";
+        private const string k_DragAndDropGenericType = "ProjectPinBoard-ListItem";
 
         #region Dragging
 

@@ -266,11 +266,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 保存
         /// </summary>
-        /// <param name="triggerUpdate"></param>
-        private static void SaveData(bool triggerUpdate = true)
+        /// <param name="sendNotification"></param>
+        private static void SaveData(bool sendNotification = true)
         {
             ProjectPinBoardData.Save();
-            if (triggerUpdate) TriggerUpdate();
+            if (sendNotification)
+            {
+                Notify();
+            }
         }
 
         /// <summary>
@@ -279,7 +282,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         public static void ClearData()
         {
             ProjectPinBoardData.Reset();
-            TriggerUpdate();
+            Notify();
         }
 
         /// <summary>
@@ -288,13 +291,13 @@ namespace ChenPipi.ProjectPinBoard.Editor
         public static void ReloadData()
         {
             ProjectPinBoardData.Reload();
-            TriggerUpdate();
+            Notify();
         }
 
         /// <summary>
         /// 通知更新
         /// </summary>
-        private static void TriggerUpdate()
+        private static void Notify()
         {
             dataUpdated?.Invoke();
         }

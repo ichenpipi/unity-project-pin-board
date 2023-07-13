@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 #if !UNITY_2021_1_OR_NEWER
 using System.Linq;
 #endif
@@ -13,6 +12,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
+
+        #region Content Initialization
 
         /// <summary>
         /// 内容
@@ -103,7 +104,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             }
 
             // 初始化列表
-            InitContentListView();
+            InitListView();
             // 初始化预览
             InitContentPreview();
         }
@@ -117,15 +118,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
             return (m_Content != null);
         }
 
-        /// <summary>
-        /// 当前列表数据
-        /// </summary>
-        private List<ItemInfo> m_ListData = new List<ItemInfo>();
+        #endregion
 
-        /// <summary>
-        /// 当前选中的资源 GUID
-        /// </summary>
-        private string m_FirstSelectedGuid = null;
+        #region Content Interface
 
         /// <summary>
         /// 更新内容
@@ -134,100 +129,24 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             if (!IsContentInited()) return;
 
-            // 克隆数据副本
-            m_ListData.Clear();
-            m_ListData.AddRange(ProjectPinBoardData.items);
+            // 取消选中
+            ClearListViewSelection();
 
-            // 处理数据
-            if (m_ListData.Count > 0)
+            // 更新列表
+            UpdateListView();
+
+            // 恢复选中
+            if (m_ListViewData.Count > 0)
             {
-                // 过滤
-                Filter(ref m_ListData);
-                // 排序
-                Sort(ref m_ListData);
+                SelectListItem(m_FirstSelectedItemGuid);
             }
 
             // 列表为空时展示占位
-            m_ContentPlaceholder.style.display = (m_ListData.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None);
-            m_ContentSplitView.style.display = (m_ListData.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex);
-
-            // 更新内容列表
-            UpdateContentListView();
-
-            // 恢复选中
-            SelectListItem(m_FirstSelectedGuid);
+            m_ContentPlaceholder.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            m_ContentSplitView.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex);
         }
 
-        /// <summary>
-        /// 获取条目元素
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private ListItem GetListItem(int index)
-        {
-#if UNITY_2021_1_OR_NEWER
-            return (ListItem)m_ListView.GetRootElementForIndex(index);
-#else
-            VisualElement[] elements = m_ListView.Children().ToArray();
-            if (index < elements.Length)
-            {
-                return (ListItem)elements[index];
-            }
-            return null;
-#endif
-        }
-
-        /// <summary>
-        /// 获取当前选中的条目元素
-        /// </summary>
-        /// <returns></returns>
-        private ListItem GetSelectedListItem()
-        {
-            return GetListItem(m_ListView.selectedIndex);
-        }
-
-        /// <summary>
-        /// 选中条目
-        /// </summary>
-        /// <param name="guid"></param>
-        public void SelectListItem(string guid)
-        {
-            if (!string.IsNullOrWhiteSpace(guid))
-            {
-                int index = m_ListData.FindIndex(v => v.MatchGUID(guid));
-                if (index >= 0)
-                {
-                    m_ListView.selectedIndex = index;
-                    m_ListView.ScrollToItem(index);
-                }
-                else
-                {
-                    ClearPreview();
-                }
-            }
-            else
-            {
-                ClearPreview();
-            }
-        }
-
-        /// <summary>
-        /// 获取选中的条目信息
-        /// </summary>
-        /// <returns></returns>
-        private ItemInfo[] GetSelectedItemInfos()
-        {
-            return m_ListView.selectedItems.Select(o => (ItemInfo)o).ToArray();
-        }
-
-        /// <summary>
-        /// 获取选中的条目GUID列表
-        /// </summary>
-        /// <returns></returns>
-        private string[] GetSelectedItemGUIDs()
-        {
-            return m_ListView.selectedItems.Select(o => ((ItemInfo)o).guid).ToArray();
-        }
+        #endregion
 
     }
 

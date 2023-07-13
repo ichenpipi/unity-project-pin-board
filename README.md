@@ -6,6 +6,17 @@ _Easy peasy, lemon squeezy!_
 
 ## Installation
 
+### Install from Package Manager
+
+1. Open the **Package Manager** Window.
+2. Open the **add(+)** menu in the Package Manager's toolbar.
+3. Select **Add package from git URL** from the add menu.
+4. Enter **the Git URL of this project** in the text box and click **Add** button.
+
+Learn more on [https://docs.unity3d.com/Manual/upm-ui-giturl.html](https://docs.unity3d.com/Manual/upm-ui-giturl.html)
+
+### Manually install
+
 Download and put the **Whole Project** in your project's Assets folder (or any subfolder would be ok).
 
 ## Usage

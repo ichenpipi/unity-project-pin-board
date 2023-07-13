@@ -17,20 +17,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
     public static class ProjectPinBoardUtil
     {
 
-        #region Package
-
-        /// <summary>
-        /// 包名
-        /// </summary>
-        internal const string PackageName = "com.chenpipi.projectpinboard";
-
-        /// <summary>
-        /// 包文件夹名称
-        /// </summary>
-        internal static readonly string PackageFolderName = $"Packages/{PackageName}";
-
-        #endregion
-
         #region File Path
 
         /// <summary>
@@ -114,7 +100,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         };
 
         /// <summary>
-        /// 是否能在Unity编辑器中打开
+        /// 是否能在Unity编辑器中打开资源
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
@@ -125,7 +111,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         }
 
         /// <summary>
-        /// 是否能在脚本编辑器中打开
+        /// 是否能在脚本编辑器中打开资源
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
@@ -143,7 +129,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             Object asset = GUIDToAsset(guid);
             if (!asset) return;
+
             EditorUtility.FocusProjectWindow();
+
             Selection.activeObject = asset;
         }
 
@@ -155,7 +143,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             Object asset = GUIDToAsset(guid);
             if (!asset) return;
+
             EditorUtility.FocusProjectWindow();
+
             EditorGUIUtility.PingObject(asset);
         }
 
@@ -172,7 +162,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
             if (IsFolder(guid))
             {
-                ShowFolderContents(guid);
+                Selection.activeObject = null;
+                EditorApplication.delayCall += () => ShowFolderContents(guid);
             }
             else
             {
@@ -189,6 +180,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             Object asset = GUIDToAsset(guid);
             if (!asset) return;
+
             AssetDatabase.OpenAsset(asset);
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,6 +13,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
+
+        #region Toolbar Initialization
 
         /// <summary>
         /// 工具栏
@@ -75,7 +78,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     // ↑ || ↓
                     if (evt.keyCode == KeyCode.UpArrow || evt.keyCode == KeyCode.DownArrow)
                     {
-                        FocusToContentListView();
+                        FocusToListView();
                     }
                 });
             }
@@ -324,12 +327,122 @@ namespace ChenPipi.ProjectPinBoard.Editor
             ProjectPinBoardSettings.syncSelection = evt.newValue;
         }
 
+        #endregion
+
+        #region Searching
+
+        /// <summary>
+        /// 搜索文本
+        /// </summary>
+        private string m_SearchText = string.Empty;
+
+        /// <summary>
+        /// 设置搜索栏内容
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetSearch(string value)
+        {
+            m_ToolbarSearchField.value = (m_SearchText = value);
+        }
+
+        /// <summary>
+        /// 获取不包含过滤器的实际搜索内容
+        /// </summary>
+        private string GetSearchContent()
+        {
+            string text = m_SearchText;
+            if (text.Contains("type:"))
+            {
+                Match match = Regex.Match(text, k_TypeFilterPattern, RegexOptions.IgnoreCase);
+                text = match.Groups[3].Value;
+            }
+            if (text.Contains("tag:"))
+            {
+                Match match = Regex.Match(text, k_TagFilterPattern, RegexOptions.IgnoreCase);
+                text = match.Groups[3].Value;
+            }
+            return text;
+        }
+
         /// <summary>
         /// 聚焦到搜索框
         /// </summary>
-        private void FocusToToolbarSearchField()
+        private void FocusToSearchField()
         {
             m_ToolbarSearchField.Focus();
+        }
+
+        #endregion
+
+        #region Filtering
+
+        /// <summary>
+        /// 类型过滤正则表达式
+        /// </summary>
+        private const string k_TypeFilterPattern = @"(.*)\s*type:(\S+)?\s*(.*)";
+
+        /// <summary>
+        /// 标签过滤正则表达式
+        /// </summary>
+        private const string k_TagFilterPattern = @"(.*)\s*tag:(\S+)?\s*(.*)";
+
+        /// <summary>
+        /// 过滤类型
+        /// </summary>
+        private string m_FilteringType = string.Empty;
+
+        /// <summary>
+        /// 过滤标签
+        /// </summary>
+        private string m_FilteringTag = string.Empty;
+
+        /// <summary>
+        /// 设置搜索栏标签过滤
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="updateSearch"></param>
+        private void SetTypeFilter(string type, bool updateSearch = true)
+        {
+            m_FilteringType = type;
+            if (updateSearch)
+            {
+                string content = GetSearchContent();
+                SetSearch(string.IsNullOrWhiteSpace(type) ? content : $"type:{type} {content}");
+            }
+        }
+
+        /// <summary>
+        /// 设置搜索栏标签过滤
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="updateSearch"></param>
+        private void SetTagFilter(string tag, bool updateSearch = true)
+        {
+            m_FilteringTag = tag;
+            if (updateSearch)
+            {
+                string content = GetSearchContent();
+                SetSearch(string.IsNullOrWhiteSpace(tag) ? content : $"tag:{tag} {content}");
+            }
+        }
+
+        #endregion
+
+        #region Sorting
+
+        /// <summary>
+        /// 当前排序类型
+        /// </summary>
+        private Sorting m_Sorting = Sorting.NameUp;
+
+        /// <summary>
+        /// 切换排序
+        /// </summary>
+        /// <param name="sorting"></param>
+        private void SwitchSorting(Sorting sorting)
+        {
+            m_Sorting = sorting;
+            UpdateContent();
         }
 
         #region Sorting Menu
@@ -370,6 +483,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
             }
             return DropdownMenuAction.Status.Disabled;
         }
+
+        #endregion
 
         #endregion
 

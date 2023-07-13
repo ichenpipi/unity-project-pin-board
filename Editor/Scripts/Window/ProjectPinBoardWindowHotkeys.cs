@@ -20,16 +20,16 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 // Alt + Shift + R
                 if (evt.altKey && evt.shiftKey && evt.keyCode == KeyCode.R)
                 {
-                    if (!string.IsNullOrWhiteSpace(m_FirstSelectedGuid))
+                    if (!string.IsNullOrWhiteSpace(m_FirstSelectedItemGuid))
                     {
-                        ProjectPinBoardUtil.ShowInExplorer(m_FirstSelectedGuid);
+                        ProjectPinBoardUtil.ShowInExplorer(m_FirstSelectedItemGuid);
                         evt.StopPropagation();
                     }
                 }
                 // Ctrl + F
                 else if (evt.ctrlKey && evt.keyCode == KeyCode.F)
                 {
-                    FocusToToolbarSearchField();
+                    FocusToSearchField();
                     evt.StopPropagation();
                 }
                 // F2
