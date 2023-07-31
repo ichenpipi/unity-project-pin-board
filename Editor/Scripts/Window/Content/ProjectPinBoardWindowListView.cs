@@ -1,17 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine.UIElements;
 
 namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（列表）
+    /// 窗口
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
 
-        #region ListView Initialization
+        #region Initialization
 
         /// <summary>
         /// 列表
@@ -75,7 +77,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 同步选择
             if (ProjectPinBoardSettings.syncSelection)
             {
-                ProjectPinBoardUtil.SelectAsset(first.guid);
+                PipiUtility.SelectAsset(first.guid);
                 // 夺回焦点
                 this.Focus();
             }
@@ -95,15 +97,15 @@ namespace ChenPipi.ProjectPinBoard.Editor
             ItemInfo info = (ItemInfo)infos.First();
             string guid = info.guid;
             // 是否可以打开
-            if (ProjectPinBoardUtil.CanOpenInEditor(guid) || ProjectPinBoardUtil.CanOpenInScriptEditor(guid))
+            if (PipiUtility.CanOpenInEditor(guid) || PipiUtility.CanOpenInScriptEditor(guid))
             {
                 // 打开资源
-                ProjectPinBoardUtil.OpenAsset(guid);
+                PipiUtility.OpenAsset(guid);
             }
             else
             {
                 // 选中资源
-                ProjectPinBoardUtil.FocusOnAsset(guid);
+                PipiUtility.FocusOnAsset(guid);
             }
         }
 
@@ -249,10 +251,25 @@ namespace ChenPipi.ProjectPinBoard.Editor
 #if UNITY_2021_1_OR_NEWER
             return (ListItem)m_ListView.GetRootElementForIndex(index);
 #else
-            VisualElement[] elements = m_ListView.Children().ToArray();
-            if (index < elements.Length)
+            Type type = m_ListView.GetType();
+            FieldInfo fieldInfo = type.GetField("m_ScrollView", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fieldInfo == null)
             {
-                return (ListItem)elements[index];
+                return null;
+            }
+            ScrollView scrollView = (ScrollView)fieldInfo.GetValue(m_ListView);
+            if (scrollView == null)
+            {
+                return null;
+            }
+            VisualElement[] elements = scrollView.Children().ToArray();
+            foreach (VisualElement element in elements)
+            {
+                ListItem listItem = (ListItem)element;
+                if (listItem.index == index)
+                {
+                    return listItem;
+                }
             }
             return null;
 #endif

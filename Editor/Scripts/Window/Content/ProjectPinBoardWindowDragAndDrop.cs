@@ -9,7 +9,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（拖拽）
+    /// 窗口
     /// </summary>
     public partial class ProjectPinBoardWindow
     {

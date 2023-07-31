@@ -11,7 +11,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（标签窗口）
+    /// 窗口：标签弹窗
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
@@ -525,7 +525,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 List<string> itemTags = (List<string>)itemTagsContainer.userData;
                 if (itemTags.Contains(tag, StringComparer.OrdinalIgnoreCase))
                 {
-                    ShowToast($"Tag \"{tag}\" already exists!");
+                    ShowNotification($"Tag \"{tag}\" already exists!");
                     return false;
                 }
 

@@ -8,12 +8,12 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（内容）
+    /// 窗口
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
 
-        #region Content Initialization
+        #region Initialization
 
         /// <summary>
         /// 内容
@@ -120,8 +120,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         #endregion
 
-        #region Content Interface
-
         /// <summary>
         /// 更新内容
         /// </summary>
@@ -145,8 +143,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
             m_ContentPlaceholder.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None);
             m_ContentSplitView.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex);
         }
-
-        #endregion
 
     }
 

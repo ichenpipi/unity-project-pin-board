@@ -15,14 +15,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// </summary>
         private void RegisterHotkeys()
         {
-            rootVisualElement.parent.RegisterCallback<KeyDownEvent>((evt) =>
+            rootVisualElement.RegisterCallback<KeyDownEvent>((evt) =>
             {
                 // Alt + Shift + R
                 if (evt.altKey && evt.shiftKey && evt.keyCode == KeyCode.R)
                 {
                     if (!string.IsNullOrWhiteSpace(m_FirstSelectedItemGuid))
                     {
-                        ProjectPinBoardUtil.ShowInExplorer(m_FirstSelectedItemGuid);
+                        PipiUtility.ShowInExplorer(m_FirstSelectedItemGuid);
                         evt.StopPropagation();
                     }
                 }

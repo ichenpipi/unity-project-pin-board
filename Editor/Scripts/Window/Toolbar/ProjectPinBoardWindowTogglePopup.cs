@@ -7,13 +7,13 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（开关窗口）
+    /// 窗口：开关列表弹窗
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
 
         /// <summary>
-        /// 展示开关列表窗口
+        /// 展示开关列表弹窗
         /// </summary>
         /// <param name="headline"></param>
         /// <param name="pos"></param>

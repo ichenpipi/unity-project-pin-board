@@ -1,15 +1,41 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 管理器
+    /// 管理器
     /// </summary>
     public static class ProjectPinBoardManager
     {
+
+        #region File Path
+
+        /// <summary>
+        /// 基础名称
+        /// </summary>
+        internal const string BaseName = "ProjectPinBoard";
+
+        /// <summary>
+        /// 项目路径
+        /// </summary>
+        private static readonly string s_ProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, "../"));
+
+        /// <summary>
+        /// 用户设置路径
+        /// </summary>
+        private static readonly string s_UserSettingsPath = Path.Combine(s_ProjectPath, "UserSettings");
+
+        /// <summary>
+        /// 本地序列化文件路径模板
+        /// </summary>
+        internal static readonly string LocalFilePathTemplate = Path.GetFullPath(Path.Combine(s_UserSettingsPath, BaseName + ".{0}.json"));
+
+        #endregion
 
         #region Window
 

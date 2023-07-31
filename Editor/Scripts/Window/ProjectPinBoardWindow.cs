@@ -9,9 +9,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口
+    /// 窗口
     /// </summary>
-    public partial class ProjectPinBoardWindow : EditorWindow, IHasCustomMenu
+    public partial class ProjectPinBoardWindow
     {
 
         #region Asset
@@ -25,6 +25,16 @@ namespace ChenPipi.ProjectPinBoard.Editor
         #endregion
 
         #region Instance
+
+        /// <summary>
+        /// 窗口标题
+        /// </summary>
+        private const string k_Title = "Project Pin Board";
+
+        /// <summary>
+        /// 窗口图标
+        /// </summary>
+        private const string k_Icon = "d_Favorite";
 
         /// <summary>
         /// 是否有已打开的窗口实例
@@ -60,8 +70,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
             window = CreateWindow<ProjectPinBoardWindow>();
             window.titleContent = new GUIContent()
             {
-                text = "Project Pin Board",
-                image = ProjectPinBoardUtil.GetIcon("d_Favorite")
+                text = k_Title,
+                image = PipiUtility.GetIcon(k_Icon),
             };
             window.minSize = new Vector2(250f, 200f);
             window.SetSize(600, 500);
@@ -98,52 +108,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
             position = pos;
         }
 
-        #endregion
-
-        #region Menu
-
-        public void AddItemsToMenu(GenericMenu menu)
+        /// <summary>
+        /// 展示通知
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="fadeoutWait"></param>
+        private void ShowNotification(string content, double fadeoutWait = 1f)
         {
-            menu.AddItem(new GUIContent("Reload"), false, Menu_Reload);
-            menu.AddItem(new GUIContent("Show Serialized Data File"), false, Menu_ShowSerializedDataFile);
-            menu.AddItem(new GUIContent("Show Serialized Settings File"), false, Menu_ShowSerializedSettingsFile);
-            menu.AddSeparator(string.Empty);
-            menu.AddItem(new GUIContent("Clear Data ⚠️"), false, Menu_ClearData);
-            menu.AddItem(new GUIContent("Reset Settings ⚠️"), false, Menu_ResetSettings);
-        }
-
-        private void Menu_Reload()
-        {
-            ProjectPinBoardManager.ReloadData();
-            ProjectPinBoardManager.ReloadSettings();
-            ApplySettings();
-        }
-
-        private void Menu_ShowSerializedDataFile()
-        {
-            EditorUtility.RevealInFinder(ProjectPinBoardData.SerializedFilePath);
-        }
-
-        private void Menu_ShowSerializedSettingsFile()
-        {
-            EditorUtility.RevealInFinder(ProjectPinBoardSettings.SerializedFilePath);
-        }
-
-        private void Menu_ClearData()
-        {
-            bool isOk = EditorUtility.DisplayDialog(
-                "[Project Pin Board] Clear Data",
-                "Are you sure to clear the data? This operation cannot be undone!",
-                "Confirm!",
-                "Cancel"
-            );
-            if (isOk) ProjectPinBoardManager.ClearData();
-        }
-
-        private void Menu_ResetSettings()
-        {
-            ProjectPinBoardManager.ResetSettings();
-            ApplySettings();
+            ShowNotification(new GUIContent(content), fadeoutWait);
         }
 
         #endregion
@@ -176,7 +148,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             // 构建视觉树
             visualTree.CloneTree(rootVisualElement);
+            // 生成元素
+            Init();
+        }
 
+        #endregion
+
+        private void Init()
+        {
             // 初始化工具栏
             InitToolbar();
             // 初始化内容
@@ -192,7 +171,19 @@ namespace ChenPipi.ProjectPinBoard.Editor
             Refresh();
         }
 
-        #endregion
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        private void Refresh()
+        {
+            if (!IsContentInited()) return;
+
+            // 收集信息
+            CollectInfo();
+
+            // 更新内容
+            UpdateContent();
+        }
 
         #region Sorting
 
@@ -401,20 +392,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
             {
                 return string.Compare(a, b, StringComparison.InvariantCultureIgnoreCase);
             }
-        }
-
-        /// <summary>
-        /// 刷新
-        /// </summary>
-        private void Refresh()
-        {
-            if (!IsContentInited()) return;
-
-            // 收集信息
-            CollectInfo();
-
-            // 更新内容
-            UpdateContent();
         }
 
         /// <summary>

@@ -12,34 +12,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 工具
+    /// 工具
     /// </summary>
-    public static class ProjectPinBoardUtil
+    public static class PipiUtility
     {
-
-        #region File Path
-
-        /// <summary>
-        /// 本地序列化文件路径模板
-        /// </summary>
-        private const string k_FileBaseName = "ProjectPinBoard";
-
-        /// <summary>
-        /// 项目路径
-        /// </summary>
-        private static readonly string s_ProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, "../"));
-
-        /// <summary>
-        /// 用户设置路径
-        /// </summary>
-        private static readonly string s_UserSettingsPath = Path.Combine(s_ProjectPath, "UserSettings");
-
-        /// <summary>
-        /// 本地序列化文件路径模板
-        /// </summary>
-        internal static readonly string LocalFilePathTemplate = Path.GetFullPath(Path.Combine(s_UserSettingsPath, k_FileBaseName + ".{0}.json"));
-
-        #endregion
 
         #region Asset Info Utility
 
@@ -335,9 +311,18 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// 获取当前时间戳
         /// </summary>
         /// <returns></returns>
-        internal static int GetTimestamp()
+        internal static long GetTimestamp()
         {
-            return (int)((DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000);
+            return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
+        /// <summary>
+        /// 生成 GUID
+        /// </summary>
+        /// <returns></returns>
+        internal static string NewGuid()
+        {
+            return Guid.NewGuid().ToString("D");
         }
 
         #endregion
@@ -356,7 +341,15 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 return new T();
             }
             string jsonString = File.ReadAllText(path, Encoding.UTF8);
-            return JsonUtility.FromJson<T>(jsonString);
+            try
+            {
+                return JsonUtility.FromJson<T>(jsonString);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return new T();
+            }
         }
 
         /// <summary>

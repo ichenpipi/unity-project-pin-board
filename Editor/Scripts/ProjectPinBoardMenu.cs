@@ -4,7 +4,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 菜单
+    /// 菜单
     /// </summary>
     public static class ProjectPinBoardMenu
     {

@@ -93,7 +93,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     {
                         name = "Top",
                         // image = ProjectPinBoardUtil.GetIcon("UpArrow"),
-                        image = ProjectPinBoardUtil.GetIcon("Download-Available"),
+                        image = PipiUtility.GetIcon("Download-Available"),
                         pickingMode = PickingMode.Ignore,
                         scaleMode = ScaleMode.ScaleToFit,
                         style =
@@ -217,7 +217,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     locateButton.Add(new Image()
                     {
                         // image = ProjectPinBoardUtil.GetIcon("d_Import"),
-                        image = ProjectPinBoardUtil.GetIcon("d_Record Off"),
+                        image = PipiUtility.GetIcon("d_Record Off"),
                         // image = ProjectPinBoardUtil.GetIcon("d_Record On"),
                         // image = ProjectPinBoardUtil.GetIcon("d_RectTransform Icon"),
                         // image = ProjectPinBoardUtil.GetIcon("d_AvatarCompass"),
@@ -277,7 +277,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 if (asset == null)
                 {
                     this.nameLabel.text = "<Missing Asset>";
-                    this.iconImage.image = ProjectPinBoardUtil.GetAssetIcon(assetPath);
+                    this.iconImage.image = PipiUtility.GetAssetIcon(assetPath);
                 }
                 else
                 {
@@ -450,7 +450,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             private void OnLocalButtonClick()
             {
                 if (userData == null) return;
-                ProjectPinBoardUtil.SelectAsset(userData.guid);
+                PipiUtility.SelectAsset(userData.guid);
             }
 
             /// <summary>
@@ -547,20 +547,20 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 case ListItemMenuItemName.Select:
                 {
                     ItemInfo itemInfo = item.userData;
-                    ProjectPinBoardUtil.FocusOnAsset(itemInfo.guid);
+                    PipiUtility.FocusOnAsset(itemInfo.guid);
                     break;
                 }
                 case ListItemMenuItemName.Open:
                 {
                     ItemInfo itemInfo = item.userData;
-                    ProjectPinBoardUtil.OpenAsset(itemInfo.guid);
+                    PipiUtility.OpenAsset(itemInfo.guid);
                     break;
                 }
                 case ListItemMenuItemName.ShowInExplorer:
                 {
                     foreach (ItemInfo itemInfo in GetSelectedItemInfos())
                     {
-                        ProjectPinBoardUtil.ShowInExplorer(itemInfo.guid);
+                        PipiUtility.ShowInExplorer(itemInfo.guid);
                     }
                     break;
                 }

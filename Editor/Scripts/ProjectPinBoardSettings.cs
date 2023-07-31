@@ -4,7 +4,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 设置
+    /// 设置
     /// </summary>
     public static class ProjectPinBoardSettings
     {
@@ -75,6 +75,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
             }
         }
 
+        #region Basic Interface
+
         /// <summary>
         /// 保存到本地
         /// </summary>
@@ -99,12 +101,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
             SetLocal(s_Settings = new Settings());
         }
 
+        #endregion
+
         #region Serialization & Deserialization
 
         /// <summary>
         /// 本地序列化文件路径
         /// </summary>
-        internal static readonly string SerializedFilePath = string.Format(ProjectPinBoardUtil.LocalFilePathTemplate, "settings");
+        internal static readonly string SerializedFilePath = string.Format(ProjectPinBoardManager.LocalFilePathTemplate, "settings");
 
         /// <summary>
         /// 获取本地序列化的设置
@@ -112,7 +116,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <returns></returns>
         private static Settings GetLocal()
         {
-            return ProjectPinBoardUtil.GetLocal<Settings>(SerializedFilePath);
+            return PipiUtility.GetLocal<Settings>(SerializedFilePath);
         }
 
         /// <summary>
@@ -121,7 +125,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <param name="value"></param>
         private static void SetLocal(Settings value)
         {
-            ProjectPinBoardUtil.SetLocal(SerializedFilePath, value);
+            PipiUtility.SetLocal(SerializedFilePath, value);
         }
 
         #endregion

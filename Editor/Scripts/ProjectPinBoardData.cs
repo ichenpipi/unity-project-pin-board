@@ -8,7 +8,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 数据
+    /// 数据
     /// </summary>
     public static class ProjectPinBoardData
     {
@@ -63,14 +63,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             if (s_Guid2Item.TryGetValue(guid, out ItemInfo item))
             {
-                item.time = ProjectPinBoardUtil.GetTimestamp();
+                item.time = PipiUtility.GetTimestamp();
                 return;
             }
 
             item = new ItemInfo()
             {
                 guid = guid,
-                time = ProjectPinBoardUtil.GetTimestamp(),
+                time = PipiUtility.GetTimestamp(),
             };
             items.Add(item);
             s_Guid2Item.Add(guid, item);
@@ -91,6 +91,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
         }
 
         #endregion
+
+        #region Basic Interface
 
         /// <summary>
         /// 保存到本地
@@ -117,13 +119,15 @@ namespace ChenPipi.ProjectPinBoard.Editor
             s_Guid2Item.Clear();
             SetLocal(s_UserData = new UserData());
         }
+        
+        #endregion
 
         #region Serialization & Deserialization
 
         /// <summary>
         /// 本地序列化文件路径
         /// </summary>
-        internal static readonly string SerializedFilePath = string.Format(ProjectPinBoardUtil.LocalFilePathTemplate, "data");
+        internal static readonly string SerializedFilePath = string.Format(ProjectPinBoardManager.LocalFilePathTemplate, "data");
 
         /// <summary>
         /// 获取本地序列化的数据
@@ -131,7 +135,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <returns></returns>
         private static UserData GetLocal()
         {
-            return ProjectPinBoardUtil.GetLocal<UserData>(SerializedFilePath);
+            return PipiUtility.GetLocal<UserData>(SerializedFilePath);
         }
 
         /// <summary>
@@ -140,7 +144,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <param name="value"></param>
         private static void SetLocal(UserData value)
         {
-            ProjectPinBoardUtil.SetLocal(SerializedFilePath, value);
+            PipiUtility.SetLocal(SerializedFilePath, value);
         }
 
         #endregion
@@ -169,7 +173,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// Pin 时间
         /// </summary>
-        public int time = 0;
+        public long time = 0;
 
         /// <summary>
         /// 显示名称
@@ -189,7 +193,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 资源名称
         /// </summary>
-        public string AssetName => ProjectPinBoardUtil.GetAssetName(guid);
+        public string AssetName => PipiUtility.GetAssetName(guid);
 
         /// <summary>
         /// 名称
