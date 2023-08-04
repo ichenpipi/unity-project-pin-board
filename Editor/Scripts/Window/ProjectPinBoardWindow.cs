@@ -404,7 +404,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
             if (guids.Length > 0)
             {
-                SelectListItem(guids[0]);
+                SetAssetListSelection(guids[0]);
             }
         }
 

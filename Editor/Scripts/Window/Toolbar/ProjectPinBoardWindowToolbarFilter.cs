@@ -15,7 +15,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarFiltering()
+        private void InitToolbarFilter()
         {
             // 类型
             {

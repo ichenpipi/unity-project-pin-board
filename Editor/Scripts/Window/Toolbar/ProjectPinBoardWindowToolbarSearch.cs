@@ -44,7 +44,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 // ↑ || ↓
                 if (evt.keyCode == KeyCode.UpArrow || evt.keyCode == KeyCode.DownArrow)
                 {
-                    FocusToListView();
+                    FocusToAssetList();
                 }
             });
         }

@@ -15,7 +15,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarSorting()
+        private void InitToolbarSort()
         {
             // 排序菜单
             {

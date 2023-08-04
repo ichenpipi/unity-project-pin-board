@@ -7,7 +7,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// 窗口：开关列表弹窗
+    /// 窗口：开关弹窗
     /// </summary>
     public partial class ProjectPinBoardWindow
     {

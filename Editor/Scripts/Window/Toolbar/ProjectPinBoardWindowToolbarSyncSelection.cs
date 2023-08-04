@@ -19,7 +19,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarSync()
+        private void InitToolbarSyncSelection()
         {
             m_ToolbarSyncSelectionToggle = new ToolbarToggle()
             {

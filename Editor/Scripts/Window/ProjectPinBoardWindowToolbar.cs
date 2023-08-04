@@ -30,15 +30,15 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 搜索栏
             InitToolbarSearch();
             // 过滤器
-            InitToolbarFiltering();
+            InitToolbarFilter();
             // 置顶文件夹开关
             InitToolbarTopFolder();
             // 预览开关
             InitToolbarPreview();
             // 同步选择开关
-            InitToolbarSync();
+            InitToolbarSyncSelection();
             // 列表排序菜单
-            InitToolbarSorting();
+            InitToolbarSort();
         }
 
     }

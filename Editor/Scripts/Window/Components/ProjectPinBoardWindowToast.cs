@@ -7,7 +7,7 @@
 // {
 //
 //     /// <summary>
-//     /// 窗口
+//     /// 窗口：Toast
 //     /// </summary>
 //     public partial class ProjectPinBoardWindow
 //     {

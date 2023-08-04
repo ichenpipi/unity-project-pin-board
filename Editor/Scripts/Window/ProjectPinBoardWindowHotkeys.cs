@@ -5,7 +5,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
 {
 
     /// <summary>
-    /// PinBoard 窗口（快捷键）
+    /// 窗口（快捷键）
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
@@ -23,31 +23,27 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     if (!string.IsNullOrWhiteSpace(m_FirstSelectedItemGuid))
                     {
                         PipiUtility.ShowInExplorer(m_FirstSelectedItemGuid);
-                        evt.StopPropagation();
                     }
                 }
                 // Ctrl + F
                 else if (evt.ctrlKey && evt.keyCode == KeyCode.F)
                 {
                     FocusToSearchField();
-                    evt.StopPropagation();
                 }
                 // F2
                 else if (evt.keyCode == KeyCode.F2)
                 {
-                    ListItem item = GetSelectedListItem();
-                    if (item != null)
-                    {
-                        item.ShowNameTextField();
-                        evt.StopPropagation();
-                    }
+                    ListItem item = GetSelectedAssetListItem();
+                    item?.ShowNameTextField();
                 }
                 // F5
                 else if (evt.keyCode == KeyCode.F5)
                 {
                     Refresh();
-                    evt.StopPropagation();
                 }
+                // 停止事件传播
+                evt.PreventDefault();
+                evt.StopImmediatePropagation();
             });
         }
 

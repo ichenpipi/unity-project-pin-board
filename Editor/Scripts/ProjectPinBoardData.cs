@@ -252,7 +252,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 匹配GUID
         /// </summary>
-        public bool MatchGUID(string guid)
+        public bool MatchGuid(string guid)
         {
             return this.guid.Equals(guid, StringComparison.OrdinalIgnoreCase);
         }

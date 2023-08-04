@@ -31,7 +31,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             DragAndDrop.StartDrag("Assets");
 
             List<Object> assets = new List<Object>();
-            object[] itemInfos = m_ListView.selectedItems.ToArray();
+            object[] itemInfos = m_AssetList.selectedItems.ToArray();
             foreach (ItemInfo itemInfo in itemInfos)
             {
                 Object asset = itemInfo.Asset;

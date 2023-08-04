@@ -128,20 +128,20 @@ namespace ChenPipi.ProjectPinBoard.Editor
             if (!IsContentInited()) return;
 
             // 取消选中
-            ClearListViewSelection();
+            ClearAssetListSelection();
 
             // 更新列表
-            UpdateListView();
+            UpdateAssetList();
 
             // 恢复选中
-            if (m_ListViewData.Count > 0)
+            if (m_AssetListData.Count > 0)
             {
-                SelectListItem(m_FirstSelectedItemGuid);
+                SetAssetListSelection(m_FirstSelectedItemGuid);
             }
 
             // 列表为空时展示占位
-            m_ContentPlaceholder.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None);
-            m_ContentSplitView.style.display = (m_ListViewData.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex);
+            m_ContentPlaceholder.style.display = (m_AssetListData.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            m_ContentSplitView.style.display = (m_AssetListData.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex);
         }
 
     }

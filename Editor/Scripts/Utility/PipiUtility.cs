@@ -53,6 +53,31 @@ namespace ChenPipi.ProjectPinBoard.Editor
             return Path.GetExtension(assetPath);
         }
 
+        /// <summary>
+        /// 项目根目录路径
+        /// </summary>
+        internal static readonly string ProjectPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets", StringComparison.Ordinal));
+
+        /// <summary>
+        /// 获取资源的绝对路径
+        /// </summary>
+        /// <param name="asset"></param>
+        /// <returns></returns>
+        internal static string GetAssetAbsolutePath(Object asset)
+        {
+            return Path.Combine(ProjectPath, AssetDatabase.GetAssetPath(asset));
+        }
+
+        /// <summary>
+        /// 获取资源的相对路径
+        /// </summary>
+        /// <param name="asset"></param>
+        /// <returns></returns>
+        internal static string GetAssetRelativePath(Object asset)
+        {
+            return AssetDatabase.GetAssetPath(asset);
+        }
+
         #endregion
 
         #region Editor Utility
