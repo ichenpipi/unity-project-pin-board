@@ -39,7 +39,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 // F5
                 else if (evt.keyCode == KeyCode.F5)
                 {
-                    Refresh();
+                    RefreshData();
                 }
                 // 停止事件传播
                 evt.PreventDefault();

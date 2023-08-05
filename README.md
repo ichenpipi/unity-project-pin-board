@@ -1,17 +1,21 @@
 # Project Pin Board 📌
 
+[中文文档](README_ZH.md)
+
 Allows you to pin commonly used assets on the window, so you can find them quickly.
+
+Supports name filtering, type filtering, and tag filtering. Supports custom tags to categorize.
 
 _Easy peasy, lemon squeezy!_
 
 ## Installation
 
-### Install from Package Manager
+### Install from Package Manager (Recommend)
 
 1. Open the **Package Manager** Window.
 2. Open the **add(+)** menu in the Package Manager's toolbar.
 3. Select **Add package from git URL** from the add menu.
-4. Enter **the Git URL of this project** in the text box and click **Add** button.
+4. Enter **the Git URL of this project (with `.git` suffix)** in the text box and click **Add** button.
 
 Learn more on [https://docs.unity3d.com/Manual/upm-ui-giturl.html](https://docs.unity3d.com/Manual/upm-ui-giturl.html)
 

@@ -19,8 +19,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 视觉树资源
         /// </summary>
-        [SerializeField]
-        private VisualTreeAsset visualTree = null;
+        [SerializeField] private VisualTreeAsset visualTree = null;
 
         #endregion
 
@@ -130,18 +129,18 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         private void OnEnable()
         {
-            ProjectPinBoardManager.dataUpdated += Refresh;
+            ProjectPinBoardManager.dataUpdated += RefreshData;
             ProjectPinBoardManager.pinned += OnPinned;
 
-            EditorApplication.projectChanged += Refresh;
+            EditorApplication.projectChanged += RefreshData;
         }
 
         private void OnDisable()
         {
-            ProjectPinBoardManager.dataUpdated -= Refresh;
+            ProjectPinBoardManager.dataUpdated -= RefreshData;
             ProjectPinBoardManager.pinned -= OnPinned;
 
-            EditorApplication.projectChanged -= Refresh;
+            EditorApplication.projectChanged -= RefreshData;
         }
 
         private void CreateGUI()
@@ -168,189 +167,11 @@ namespace ChenPipi.ProjectPinBoard.Editor
             RegisterHotkeys();
 
             // 刷新数据
-            Refresh();
+            RefreshData();
+
+            // 应用设置
+            ApplySettings();
         }
-
-        /// <summary>
-        /// 刷新
-        /// </summary>
-        private void Refresh()
-        {
-            if (!IsContentInited()) return;
-
-            // 收集信息
-            CollectInfo();
-
-            // 更新内容
-            UpdateContent();
-        }
-
-        #region Sorting
-
-        /// <summary>
-        /// 排序方式
-        /// </summary>
-        private enum Sorting
-        {
-
-            /// <summary>
-            /// 名称递增
-            /// </summary>
-            NameUp = 1,
-
-            /// <summary>
-            /// 名称递减
-            /// </summary>
-            NameDown = 2,
-
-            /// <summary>
-            /// 时间递增
-            /// </summary>
-            TimeUp = 3,
-
-            /// <summary>
-            /// 时间递减
-            /// </summary>
-            TimeDown = 4,
-
-        }
-
-        /// <summary>
-        /// 排序优先级
-        /// </summary>
-        private static class SortingPriority
-        {
-            public const int Directory = 20;
-            public const int Top = 10;
-            public const int Base = 0;
-            public const int Invalid = -1;
-        }
-
-        /// <summary>
-        /// 基础排序函数
-        /// </summary>
-        private static readonly Comparison<ItemInfo> s_BaseSortingComparer = (a, b) =>
-        {
-            int ap = SortingPriority.Base;
-            int bp = SortingPriority.Base;
-            // 是否置顶文件夹
-            if (ProjectPinBoardSettings.topFolder)
-            {
-                if (a.IsDirectory()) ap += SortingPriority.Directory;
-                if (b.IsDirectory()) bp += SortingPriority.Directory;
-            }
-            // 是否置顶
-            if (a.top) ap += SortingPriority.Top;
-            if (b.top) bp += SortingPriority.Top;
-            // 是否为有效资源
-            if (!a.IsValid()) ap += SortingPriority.Invalid;
-            if (!b.IsValid()) bp += SortingPriority.Invalid;
-            return bp - ap;
-        };
-
-        /// <summary>
-        /// 排序函数
-        /// </summary>
-        private static readonly Dictionary<Sorting, Comparison<ItemInfo>> s_SortingComparers = new Dictionary<Sorting, Comparison<ItemInfo>>()
-        {
-            {
-                Sorting.NameUp, (a, b) =>
-                {
-                    int baseSorting = s_BaseSortingComparer(a, b);
-                    return baseSorting != 0 ? baseSorting : string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase);
-                }
-            },
-            {
-                Sorting.NameDown, (a, b) =>
-                {
-                    int baseSorting = s_BaseSortingComparer(a, b);
-                    if (baseSorting != 0) return baseSorting;
-                    return (-string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase));
-                }
-            },
-            {
-                Sorting.TimeUp, (a, b) =>
-                {
-                    int baseSorting = s_BaseSortingComparer(a, b);
-                    if (baseSorting != 0) return baseSorting;
-                    return a.time.CompareTo(b.time);
-                }
-            },
-            {
-                Sorting.TimeDown, (a, b) =>
-                {
-                    int baseSorting = s_BaseSortingComparer(a, b);
-                    if (baseSorting != 0) return baseSorting;
-                    return (-a.time.CompareTo(b.time));
-                }
-            },
-        };
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        /// <param name="list"></param>
-        private void Sort(ref List<ItemInfo> list)
-        {
-            list.Sort(s_SortingComparers[m_Sorting]);
-        }
-
-        #endregion
-
-        #region Filtering
-
-        /// <summary>
-        /// 过滤
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        private void Filter(ref List<ItemInfo> list)
-        {
-            // 移除空格
-            string text = m_SearchText.Trim();
-
-            // 匹配类型
-            SetTypeFilter(string.Empty, false);
-            if (text.Contains("type:"))
-            {
-                Match match = Regex.Match(text, k_TypeFilterPattern, RegexOptions.IgnoreCase);
-                if (match.Success)
-                {
-                    SetTypeFilter(match.Groups[2].Value, false);
-                    if (!string.IsNullOrWhiteSpace(m_FilteringType))
-                    {
-                        list = list.FindAll(v => v.MatchType(m_FilteringType));
-                    }
-                    text = match.Groups[3].Value;
-                }
-            }
-
-            // 匹配标签
-            SetTagFilter(string.Empty, false);
-            if (text.Contains("tag:"))
-            {
-                Match match = Regex.Match(text, k_TagFilterPattern, RegexOptions.IgnoreCase);
-                if (match.Success)
-                {
-                    SetTagFilter(match.Groups[2].Value, false);
-                    if (!string.IsNullOrWhiteSpace(m_FilteringTag))
-                    {
-                        list = list.FindAll(v => v.MatchTag(m_FilteringTag));
-                    }
-                    text = match.Groups[3].Value;
-                }
-            }
-
-            // 匹配名称
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                string pattern = text.Trim().ToCharArray().Join(".*");
-                Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
-                list = list.FindAll(v => regex.Match(v.AssetName).Success || regex.Match(v.displayName).Success);
-            }
-        }
-
-        #endregion
 
         #region Data
 
@@ -392,6 +213,20 @@ namespace ChenPipi.ProjectPinBoard.Editor
             {
                 return string.Compare(a, b, StringComparison.InvariantCultureIgnoreCase);
             }
+        }
+
+        /// <summary>
+        /// 刷新数据
+        /// </summary>
+        private void RefreshData()
+        {
+            if (!IsContentInited()) return;
+
+            // 收集信息
+            CollectInfo();
+
+            // 更新内容
+            UpdateContent();
         }
 
         /// <summary>

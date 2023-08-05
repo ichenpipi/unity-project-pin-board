@@ -202,10 +202,11 @@ namespace ChenPipi.ProjectPinBoard.Editor
                         },
                     };
                     three.Add(nameLabel);
-                    // 定位按钮
+                    // 浮动按钮
                     floatButton = new ButtonWithIcon()
                     {
-                        name = "Locate",
+                        name = "FloatButton",
+                        focusable = false,
                         style =
                         {
                             position = Position.Absolute,

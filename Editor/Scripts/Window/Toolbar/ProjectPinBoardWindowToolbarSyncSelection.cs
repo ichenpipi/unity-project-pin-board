@@ -19,24 +19,34 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarSyncSelection()
+        private void InitToolbarSyncSelectionToggle()
         {
             m_ToolbarSyncSelectionToggle = new ToolbarToggle()
             {
                 name = "SyncSelection",
                 tooltip = "Sync selection to Project Browser",
-                value = ProjectPinBoardSettings.syncSelection,
+                focusable = false,
                 style =
                 {
+                    flexShrink = 0,
                     width = 25,
-                    minWidth = 25,
                     paddingTop = 0,
+                    paddingBottom = 0,
+                    paddingLeft = 2,
+                    paddingRight = 2,
                     marginLeft = -1,
+                    marginRight = 0,
+                    left = 0,
                     alignItems = Align.Center,
                     justifyContent = Justify.Center,
                 }
             };
             m_Toolbar.Add(m_ToolbarSyncSelectionToggle);
+            // 处理元素
+            {
+                VisualElement input = m_ToolbarSyncSelectionToggle.Q<VisualElement>("", "unity-toggle__input");
+                input.style.flexGrow = 0;
+            }
             // 图标
             m_ToolbarSyncSelectionToggle.Add(new Image()
             {
@@ -44,7 +54,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {
-                    alignSelf = Align.Center,
                     width = 16,
                 }
             });

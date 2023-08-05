@@ -19,24 +19,34 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarTopFolder()
+        private void InitToolbarTopFolderToggle()
         {
             m_ToolbarTopFolderToggle = new ToolbarToggle()
             {
                 name = "FolderToggle",
                 tooltip = "Keep folders on top",
-                value = ProjectPinBoardSettings.topFolder,
+                focusable = false,
                 style =
                 {
+                    flexShrink = 0,
                     width = 25,
-                    minWidth = 25,
                     paddingTop = 0,
+                    paddingBottom = 0,
+                    paddingLeft = 2,
+                    paddingRight = 2,
                     marginLeft = -1,
+                    marginRight = 0,
+                    left = 0,
                     alignItems = Align.Center,
                     justifyContent = Justify.Center,
                 }
             };
             m_Toolbar.Add(m_ToolbarTopFolderToggle);
+            // 处理元素
+            {
+                VisualElement input = m_ToolbarTopFolderToggle.Q<VisualElement>("", "unity-toggle__input");
+                input.style.flexGrow = 0;
+            }
             // 图标
             m_ToolbarTopFolderToggle.Add(new Image()
             {
@@ -44,8 +54,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {
-                    flexBasis = Length.Percent(100),
-                    width = 12,
+                    width = 16,
                 }
             });
             // 回调

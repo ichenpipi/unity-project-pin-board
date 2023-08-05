@@ -20,16 +20,16 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        private void InitToolbarSearch()
+        private void InitToolbarSearchField()
         {
             m_ToolbarSearchField = new ToolbarSearchField()
             {
                 name = "SearchField",
                 value = m_SearchText,
+                focusable = false,
                 style =
                 {
                     width = StyleKeyword.Auto,
-                    maxWidth = 3000,
                     marginLeft = 4,
                     marginRight = 4,
                     flexShrink = 1,

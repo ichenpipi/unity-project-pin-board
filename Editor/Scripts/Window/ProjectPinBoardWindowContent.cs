@@ -134,9 +134,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
             UpdateAssetList();
 
             // 恢复选中
-            if (m_AssetListData.Count > 0)
+            if (!string.IsNullOrEmpty(m_FirstSelectedItemGuid) && m_AssetListData.Count > 0)
             {
                 SetAssetListSelection(m_FirstSelectedItemGuid);
+                SetPreview(ProjectPinBoardData.GetItem(m_FirstSelectedItemGuid));
             }
 
             // 列表为空时展示占位

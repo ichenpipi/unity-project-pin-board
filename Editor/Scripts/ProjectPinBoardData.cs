@@ -52,6 +52,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         public static ItemInfo GetItem(string guid)
         {
+            if (string.IsNullOrEmpty(guid))
+            {
+                return null;
+            }
             if (s_Guid2Item.TryGetValue(guid, out ItemInfo item))
             {
                 return item;
@@ -61,6 +65,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         public static void AddItem(string guid)
         {
+            if (string.IsNullOrEmpty(guid))
+            {
+                return;
+            }
             if (s_Guid2Item.TryGetValue(guid, out ItemInfo item))
             {
                 item.time = PipiUtility.GetTimestamp();
@@ -78,6 +86,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         public static void RemoveItem(string guid)
         {
+            if (string.IsNullOrEmpty(guid))
+            {
+                return;
+            }
             if (s_Guid2Item.TryGetValue(guid, out ItemInfo item))
             {
                 s_Guid2Item.Remove(guid);
@@ -87,6 +99,10 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
         public static bool HasItem(string guid)
         {
+            if (string.IsNullOrEmpty(guid))
+            {
+                return false;
+            }
             return s_Guid2Item.TryGetValue(guid, out ItemInfo _);
         }
 
@@ -119,7 +135,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             s_Guid2Item.Clear();
             SetLocal(s_UserData = new UserData());
         }
-        
+
         #endregion
 
         #region Serialization & Deserialization
