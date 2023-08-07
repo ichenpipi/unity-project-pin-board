@@ -17,6 +17,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             rootVisualElement.RegisterCallback<KeyDownEvent>((evt) =>
             {
+                bool stopEvent = true;
+
                 // Alt + Shift + R
                 if (evt.altKey && evt.shiftKey && evt.keyCode == KeyCode.R)
                 {
@@ -41,9 +43,18 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 {
                     RefreshData();
                 }
-                // 停止事件传播
-                evt.PreventDefault();
-                evt.StopImmediatePropagation();
+                // 不响应
+                else
+                {
+                    stopEvent = false;
+                }
+
+                if (stopEvent)
+                {
+                    // 阻止事件的默认行为，停止事件传播
+                    evt.PreventDefault();
+                    evt.StopImmediatePropagation();
+                }
             });
         }
 

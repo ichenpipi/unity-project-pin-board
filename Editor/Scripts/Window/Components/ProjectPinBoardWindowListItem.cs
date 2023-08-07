@@ -288,6 +288,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
             /// <param name="evt"></param>
             private void OnNameTextFieldKeyDown(KeyDownEvent evt)
             {
+                bool stopEvent = true;
+
                 // Enter
                 if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
                 {
@@ -298,9 +300,18 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 {
                     HideNameTextField();
                 }
-                // 停止事件传播
-                evt.PreventDefault();
-                evt.StopImmediatePropagation();
+                // 不响应
+                else
+                {
+                    stopEvent = false;
+                }
+
+                if (stopEvent)
+                {
+                    // 阻止事件的默认行为，停止事件传播
+                    evt.PreventDefault();
+                    evt.StopImmediatePropagation();
+                }
             }
 
             /// <summary>
