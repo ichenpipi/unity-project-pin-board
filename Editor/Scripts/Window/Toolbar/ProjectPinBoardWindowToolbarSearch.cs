@@ -26,7 +26,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
             {
                 name = "SearchField",
                 value = m_SearchText,
-                focusable = false,
                 style =
                 {
                     width = StyleKeyword.Auto,
