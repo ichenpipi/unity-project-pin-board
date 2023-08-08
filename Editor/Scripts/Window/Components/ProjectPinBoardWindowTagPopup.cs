@@ -101,7 +101,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                             marginTop = 0,
                             marginLeft = 5,
                             marginRight = 5,
-                            unityFontStyleAndWeight = FontStyle.Bold,
+                            unityFontStyleAndWeight = FontStyle.Normal,
                             whiteSpace = WhiteSpace.Normal,
                         }
                     };
@@ -162,7 +162,11 @@ namespace ChenPipi.ProjectPinBoard.Editor
                         position = Position.Absolute,
                         paddingTop = 5,
                         paddingBottom = 10,
-                        backgroundColor = new Color(57 / 255f, 57 / 255f, 57 / 255f, 1f),
+                        backgroundColor = popupBgColor,
+                        borderTopColor = borderColor,
+                        borderBottomColor = borderColor,
+                        borderLeftColor = borderColor,
+                        borderRightColor = borderColor,
                         borderTopLeftRadius = 8,
                         borderTopRightRadius = 8,
                         borderBottomLeftRadius = 8,
@@ -221,6 +225,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     {
                         marginBottom = 10,
                         unityTextAlign = TextAnchor.MiddleCenter,
+                        unityFontStyleAndWeight = FontStyle.Bold,
                         whiteSpace = WhiteSpace.Normal,
                     }
                 });

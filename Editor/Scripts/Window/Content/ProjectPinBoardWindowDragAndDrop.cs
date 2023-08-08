@@ -71,14 +71,13 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     bottom = 0,
                     left = 0,
                     right = 0,
-                    backgroundColor = new Color(0f, 0f, 0f, 80 / 255f),
+                    backgroundColor = dropTipBgColor,
                 }
             };
             rootVisualElement.Add(m_DropArea);
 
             // 放置样式
             const int dropTipBorderWidth = 2;
-            Color dropTipBorderColor = new Color(210 / 255f, 210 / 255f, 210 / 255f, 1f);
             float dropTipMarginTop = m_Toolbar.style.height.value.value;
             m_DropTip = new VisualElement()
             {
@@ -111,7 +110,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     paddingLeft = 0,
                     paddingRight = 0,
                     fontSize = 40,
-                    color = new Color(210 / 255f, 210 / 255f, 210 / 255f, 1f),
+                    color = dropTipTextColor,
                     unityFontStyleAndWeight = FontStyle.Bold,
                     unityTextAlign = TextAnchor.MiddleCenter,
 #if UNITY_2021_1_OR_NEWER

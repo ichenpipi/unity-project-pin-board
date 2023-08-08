@@ -50,7 +50,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_ToolbarSyncSelectionToggle.Add(new Image()
             {
-                image = PipiUtility.GetIcon("d_Grid.Default"),
+                image = PipiUtility.GetIcon("Grid.Default"),
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {

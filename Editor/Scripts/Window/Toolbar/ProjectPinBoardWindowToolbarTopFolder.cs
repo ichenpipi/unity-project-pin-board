@@ -50,7 +50,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_ToolbarTopFolderToggle.Add(new Image()
             {
-                image = PipiUtility.GetIcon("d_Folder Icon"),
+                image = PipiUtility.GetIcon("Folder Icon"),
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {

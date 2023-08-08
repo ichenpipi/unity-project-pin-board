@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -29,11 +28,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// 窗口标题
         /// </summary>
         private const string k_Title = "Project Pin Board";
-
-        /// <summary>
-        /// 窗口图标
-        /// </summary>
-        private const string k_Icon = "d_Favorite";
 
         /// <summary>
         /// 是否有已打开的窗口实例
@@ -70,7 +64,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             window.titleContent = new GUIContent()
             {
                 text = k_Title,
-                image = PipiUtility.GetIcon(k_Icon),
+                image = PipiUtility.GetIcon("Favorite"),
             };
             window.minSize = new Vector2(250f, 200f);
             window.SetSize(600, 500);

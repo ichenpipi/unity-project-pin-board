@@ -28,6 +28,12 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 m_Toolbar.style.flexDirection = FlexDirection.Row;
             }
 
+            // 分割线
+            VisualElement separator = rootVisualElement.Q<VisualElement>("Separator");
+            {
+                separator.style.borderBottomColor = separatorColor;
+            }
+
             // 搜索栏
             InitToolbarSearchField();
             // 过滤器

@@ -50,7 +50,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_ToolbarPreviewToggle.Add(new Image()
             {
-                image = PipiUtility.GetIcon("d_scenevis_visible_hover"),
+                image = PipiUtility.GetIcon("scenevis_visible_hover"),
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {

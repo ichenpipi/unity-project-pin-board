@@ -260,7 +260,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     paddingRight = 5,
                     borderTopWidth = 1,
                     backgroundColor = PipiUtility.EditorBackgroundColor,
-                    borderTopColor = m_SeparatorColor,
+                    borderTopColor = separatorColor,
                     flexDirection = FlexDirection.Row,
                     flexWrap = Wrap.Wrap,
                     alignItems = Align.Center,

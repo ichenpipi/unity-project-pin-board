@@ -54,7 +54,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_TypeFilterButton.Add(new Image()
             {
-                image = PipiUtility.GetIcon("d_FilterByType"),
+                image = PipiUtility.GetIcon("FilterByType"),
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {
@@ -89,7 +89,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_TagFilterButton.Add(new Image()
             {
-                image = PipiUtility.GetIcon("d_FilterByLabel"),
+                image = PipiUtility.GetIcon("FilterByLabel"),
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
                 {

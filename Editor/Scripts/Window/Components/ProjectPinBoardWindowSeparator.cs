@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace ChenPipi.ProjectPinBoard.Editor
@@ -9,11 +8,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
     /// </summary>
     public partial class ProjectPinBoardWindow
     {
-
-        /// <summary>
-        /// 分割线颜色
-        /// </summary>
-        private readonly Color m_SeparatorColor = new Color(35 / 255f, 35 / 255f, 35 / 255f, 1f);
 
         /// <summary>
         /// 生成水平分割线
@@ -30,7 +24,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 {
                     height = 1,
                     borderBottomWidth = 1,
-                    borderBottomColor = m_SeparatorColor,
+                    borderBottomColor = separatorColor,
                     marginTop = margin,
                     marginBottom = margin,
                     flexShrink = 0,

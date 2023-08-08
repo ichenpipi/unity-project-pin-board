@@ -306,7 +306,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             ListItem listItem = new ListItem();
             // 浮动按钮
             listItem.enableFloatButton = true;
-            listItem.floatButton.SetIcon(PipiUtility.GetIcon("d_Record Off"));
+            listItem.floatButton.SetIcon(PipiUtility.GetIcon("Record Off"));
             listItem.floatButton.tooltip = "Locate to asset";
             listItem.floatButtonClicked += OnListItemFloatButtonClicked;
             // 注册右键菜单

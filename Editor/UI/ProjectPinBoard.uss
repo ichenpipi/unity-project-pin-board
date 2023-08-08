@@ -1,9 +1,17 @@
 .Tag {
-    background-color: rgba(34, 73, 128, 1.0);
+
 }
 
 .Tag:hover {
 
+}
+
+.Tag.Dark {
+    background-color: rgba(34, 73, 128, 1.0);
+}
+
+.Tag.Light {
+    background-color: rgba(20, 100, 200, 1.0);
 }
 
 .Tag.Addable {

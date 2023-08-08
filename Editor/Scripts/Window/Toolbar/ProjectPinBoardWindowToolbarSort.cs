@@ -48,7 +48,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 图标
             m_SortingMenu.Insert(0, new Image()
             {
-                image = PipiUtility.GetIcon("d_AlphabeticalSorting"),
+                image = PipiUtility.GetIcon("AlphabeticalSorting"),
                 scaleMode = ScaleMode.ScaleToFit,
             });
             // 隐藏文本元素

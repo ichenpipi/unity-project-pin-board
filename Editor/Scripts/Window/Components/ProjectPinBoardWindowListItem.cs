@@ -104,7 +104,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     topImage = new Image
                     {
                         name = "Top",
-                        // image = ProjectPinBoardUtil.GetIcon("UpArrow"),
                         image = PipiUtility.GetIcon("Download-Available"),
                         pickingMode = PickingMode.Ignore,
                         scaleMode = ScaleMode.ScaleToFit,

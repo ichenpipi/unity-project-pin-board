@@ -96,11 +96,12 @@ namespace ChenPipi.ProjectPinBoard.Editor
             // 拖拽线
             {
                 VisualElement dragLine = m_ContentSplitView.Q<VisualElement>("unity-dragline-anchor");
-                IStyle style = dragLine.style;
+                IStyle dragLineStyle = dragLine.style;
                 // 禁止拖拽线在Hover的时候变颜色
-                dragLine.RegisterCallback<MouseEnterEvent>((evt) => style.backgroundColor = new Color(89 / 255f, 89 / 255f, 89 / 255f, 1f));
+                Color color = dragLineColor;
+                dragLine.RegisterCallback<MouseEnterEvent>((evt) => dragLineStyle.backgroundColor = color);
                 // 拖动拖拽线后保存其位置
-                dragLine.RegisterCallback<MouseUpEvent>((evt) => ProjectPinBoardSettings.dragLinePos = style.left.value.value);
+                dragLine.RegisterCallback<MouseUpEvent>((evt) => ProjectPinBoardSettings.dragLinePos = dragLineStyle.left.value.value);
             }
 
             // 初始化列表

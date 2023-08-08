@@ -42,6 +42,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     paddingRight = 5,
                     marginLeft = 5,
                     marginTop = 5,
+                    color = tagTextColor,
                     unityTextAlign = TextAnchor.MiddleCenter,
                     unityFontStyleAndWeight = FontStyle.Bold,
                     whiteSpace = WhiteSpace.Normal,
@@ -49,6 +50,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
             };
             // 使用 uss 指定部分样式，代码目前无法指定 hover 状态样式
             label.AddToClassList("Tag");
+            label.AddToClassList(Theme.isDarkTheme ? "Dark" : "Light");
             // 点击回调
             if (clickCallback != null)
             {
