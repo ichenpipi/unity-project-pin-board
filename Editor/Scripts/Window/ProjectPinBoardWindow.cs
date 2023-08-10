@@ -66,7 +66,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 text = k_Title,
                 image = PipiUtility.GetIcon("Favorite"),
             };
-            window.minSize = new Vector2(250f, 200f);
+            window.minSize = new Vector2(100, 100);
             window.SetSize(600, 500);
             window.SetCenter();
             return window;
@@ -251,7 +251,33 @@ namespace ChenPipi.ProjectPinBoard.Editor
             m_ToolbarTopFolderToggle.SetValueWithoutNotify(ProjectPinBoardSettings.topFolder);
             m_ToolbarPreviewToggle.SetValueWithoutNotify(ProjectPinBoardSettings.enablePreview);
             m_ToolbarSyncSelectionToggle.SetValueWithoutNotify(ProjectPinBoardSettings.syncSelection);
-            m_ContentSplitView.fixedPaneInitialDimension = ProjectPinBoardSettings.dragLinePos;
+
+            ApplySettings_DragLine();
+        }
+
+        /// <summary>
+        /// 应用拖拽线
+        /// </summary>
+        private void ApplySettings_DragLine()
+        {
+            if (!IsContentInited()) return;
+
+            float rootWidth = rootVisualElement.worldBound.width;
+            float leftPaneMinWidth = m_AssetList.style.minWidth.value.value;
+            float rightPaneMinWidth = m_PreviewPane.style.minWidth.value.value;
+            float dragLinePos = ProjectPinBoardSettings.dragLinePos;
+            if (dragLinePos < leftPaneMinWidth || dragLinePos > rootWidth - rightPaneMinWidth)
+            {
+                dragLinePos = leftPaneMinWidth;
+            }
+            else
+            {
+                if (m_ContentSplitView.fixedPaneIndex == 1)
+                {
+                    dragLinePos = rootWidth - dragLinePos;
+                }
+            }
+            m_ContentSplitView.fixedPaneInitialDimension = dragLinePos;
         }
 
         #endregion

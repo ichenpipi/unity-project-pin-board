@@ -19,8 +19,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
             menu.AddItem(new GUIContent("Clear Data ⚠️"), false, Menu_ClearData);
             menu.AddItem(new GUIContent("Reset Settings ⚠️"), false, Menu_ResetSettings);
             menu.AddSeparator(string.Empty);
-            menu.AddItem(new GUIContent("About/Home Page (Gitee)"), false, Menu_HomePage1);
-            menu.AddItem(new GUIContent("About/Home Page (Github)"), false, Menu_HomePage2);
+            menu.AddItem(new GUIContent("About/陈皮皮 (ichenpipi)"), false, Menu_HomePage);
+            menu.AddItem(new GUIContent("About/Project Home Page (Github)"), false, Menu_ProjectHomePageGithub);
+            menu.AddItem(new GUIContent("About/Project Home Page (Gitee)"), false, Menu_ProjectHomePageGitee);
         }
 
         private void Menu_Reload()
@@ -57,14 +58,19 @@ namespace ChenPipi.ProjectPinBoard.Editor
             ApplySettings();
         }
 
-        private void Menu_HomePage1()
+        private void Menu_HomePage()
         {
-            Application.OpenURL("https://gitee.com/ichenpipi/unity-project-pin-board");
+            Application.OpenURL("https://github.com/ichenpipi");
         }
 
-        private void Menu_HomePage2()
+        private void Menu_ProjectHomePageGithub()
         {
             Application.OpenURL("https://github.com/ichenpipi/unity-project-pin-board");
+        }
+
+        private void Menu_ProjectHomePageGitee()
+        {
+            Application.OpenURL("https://gitee.com/ichenpipi/unity-project-pin-board");
         }
 
     }

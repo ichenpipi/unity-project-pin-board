@@ -69,6 +69,11 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             ProjectPinBoardSettings.enablePreview = evt.newValue;
             TogglePreview(evt.newValue);
+            // 确保拖拽线位置无异常
+            if (evt.newValue)
+            {
+                ApplySettings_DragLine();
+            }
         }
 
     }

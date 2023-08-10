@@ -46,7 +46,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 style =
                 {
                     flexBasis = Length.Percent(100),
-                    minWidth = 150,
+                    minWidth = 100,
                 }
             };
             m_ContentSplitView.Add(m_AssetList);

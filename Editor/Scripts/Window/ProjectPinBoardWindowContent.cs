@@ -31,6 +31,11 @@ namespace ChenPipi.ProjectPinBoard.Editor
         private TwoPaneSplitView m_ContentSplitView = null;
 
         /// <summary>
+        /// 内容分栏拖拽线
+        /// </summary>
+        private VisualElement m_ContentDragLine = null;
+
+        /// <summary>
         /// 初始化内容
         /// </summary>
         private void InitContent()
@@ -95,13 +100,26 @@ namespace ChenPipi.ProjectPinBoard.Editor
 
             // 拖拽线
             {
-                VisualElement dragLine = m_ContentSplitView.Q<VisualElement>("unity-dragline-anchor");
-                IStyle dragLineStyle = dragLine.style;
+                m_ContentDragLine = m_ContentSplitView.Q<VisualElement>("unity-dragline-anchor");
+                IStyle dragLineStyle = m_ContentDragLine.style;
                 // 禁止拖拽线在Hover的时候变颜色
                 Color color = dragLineColor;
-                dragLine.RegisterCallback<MouseEnterEvent>((evt) => dragLineStyle.backgroundColor = color);
+                m_ContentDragLine.RegisterCallback<MouseEnterEvent>((evt) => dragLineStyle.backgroundColor = color);
                 // 拖动拖拽线后保存其位置
-                dragLine.RegisterCallback<MouseUpEvent>((evt) => ProjectPinBoardSettings.dragLinePos = dragLineStyle.left.value.value);
+                m_ContentDragLine.RegisterCallback<MouseUpEvent>((evt) =>
+                {
+                    float rootWidth = rootVisualElement.worldBound.width;
+                    float leftPaneMinWidth = m_AssetList.style.minWidth.value.value;
+                    float rightPaneMinWidth = m_PreviewPane.style.minWidth.value.value;
+                    float dragLinePos = dragLineStyle.left.value.value;
+                    if (dragLinePos < leftPaneMinWidth || dragLinePos > rootWidth - rightPaneMinWidth)
+                    {
+                        dragLinePos = leftPaneMinWidth;
+                        dragLineStyle.left = dragLinePos;
+                        m_ContentSplitView.fixedPaneInitialDimension = dragLinePos;
+                    }
+                    ProjectPinBoardSettings.dragLinePos = dragLinePos;
+                });
             }
 
             // 初始化列表

@@ -1,6 +1,6 @@
 {
     "name": "com.chenpipi.project-pin-board",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "unity": "2020.2",
     "displayName": "Project Pin Board",
     "keywords": [
@@ -13,13 +13,13 @@
     "author": {
         "name": "ChenPipi",
         "email": "952157129@qq.com",
-        "url": "https://gitee.com/ichenpipi"
+        "url": "https://github.com/ichenpipi"
     },
     "dependencies": {
     },
     "repository": {
         "type": "git",
-        "url": "https://gitee.com/ichenpipi/unity-project-pin-board.git"
+        "url": "https://github.com/ichenpipi/unity-project-pin-board.git"
     },
     "license": "MIT"
 }
