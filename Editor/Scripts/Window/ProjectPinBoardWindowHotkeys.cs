@@ -1,3 +1,5 @@
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,7 +43,22 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 // F5
                 else if (evt.keyCode == KeyCode.F5)
                 {
-                    RefreshData();
+                    Menu_Reload();
+                }
+                // Delete / Backspace
+                else if (evt.keyCode == KeyCode.Delete || evt.keyCode == KeyCode.Backspace)
+                {
+                    string[] names = GetSelectedItemInfos().Select(v => $"- {v.Name}").ToArray();
+                    bool isOk = EditorUtility.DisplayDialog(
+                        "[Project Pin Board] Unpin assets",
+                        $"Are you sure to unpin the following assets?\n{string.Join("\n", names)}",
+                        "Confirm!",
+                        "Cancel"
+                    );
+                    if (isOk)
+                    {
+                        ProjectPinBoardManager.Unpin(GetSelectedItemGuids());
+                    }
                 }
                 // 不响应
                 else

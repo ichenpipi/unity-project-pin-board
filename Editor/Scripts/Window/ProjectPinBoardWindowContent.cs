@@ -72,6 +72,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     }
                 });
             }
+            // 监听元素尺寸变化
+            m_Content.RegisterCallback<GeometryChangedEvent>(OnContentGeometryChangedEventChanged);
 
             // 内容分栏
             m_ContentSplitView = new TwoPaneSplitView()
@@ -86,17 +88,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 }
             };
             m_Content.Add(m_ContentSplitView);
-
-            // 元素就绪后恢复预览区域状态
-            {
-                void Callback(GeometryChangedEvent evt)
-                {
-                    TogglePreview(ProjectPinBoardSettings.enablePreview);
-                    m_ContentSplitView.UnregisterCallback<GeometryChangedEvent>(Callback);
-                }
-
-                m_ContentSplitView.RegisterCallback<GeometryChangedEvent>(Callback);
-            }
 
             // 拖拽线
             {
@@ -126,6 +117,17 @@ namespace ChenPipi.ProjectPinBoard.Editor
             InitListView();
             // 初始化预览
             InitContentPreview();
+        }
+
+        /// <summary>
+        /// 元素尺寸变化回调
+        /// </summary>
+        /// <param name="evt"></param>
+        private void OnContentGeometryChangedEventChanged(GeometryChangedEvent evt)
+        {
+            // 窄视图时隐藏预览区域
+            bool isNarrow = (m_Toolbar.localBound.width <= 250);
+            TogglePreview(!isNarrow && ProjectPinBoardSettings.enablePreview);
         }
 
         /// <summary>

@@ -27,6 +27,8 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 m_Toolbar.style.flexShrink = 0;
                 m_Toolbar.style.flexDirection = FlexDirection.Row;
             }
+            // 监听元素尺寸变化
+            m_Toolbar.RegisterCallback<GeometryChangedEvent>(OnToolbarGeometryChangedEventChanged);
 
             // 分割线
             VisualElement separator = rootVisualElement.Q<VisualElement>("Separator");
@@ -57,6 +59,17 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     element.style.marginRight = -1;
                 }
             }
+        }
+
+        /// <summary>
+        /// 元素尺寸变化回调
+        /// </summary>
+        /// <param name="evt"></param>
+        private void OnToolbarGeometryChangedEventChanged(GeometryChangedEvent evt)
+        {
+            // 窄视图时隐藏部分按钮
+            m_ToolbarPreviewToggle.style.display = ((m_Toolbar.localBound.width <= 250) ? DisplayStyle.None : DisplayStyle.Flex);
+            m_ToolbarSyncSelectionToggle.style.display = ((m_Toolbar.localBound.width <= 200) ? DisplayStyle.None : DisplayStyle.Flex);
         }
 
     }

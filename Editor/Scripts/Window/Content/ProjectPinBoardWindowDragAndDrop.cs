@@ -107,12 +107,13 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 text = "Drop to Pin",
                 style =
                 {
-                    paddingLeft = 0,
-                    paddingRight = 0,
+                    paddingLeft = 10,
+                    paddingRight = 10,
                     fontSize = 40,
                     color = dropTipTextColor,
                     unityFontStyleAndWeight = FontStyle.Bold,
                     unityTextAlign = TextAnchor.MiddleCenter,
+                    whiteSpace = WhiteSpace.Normal,
 #if UNITY_2021_1_OR_NEWER
                     unityTextOutlineColor = new Color(0f, 0f, 0f, 1f),
                     unityTextOutlineWidth = 1,

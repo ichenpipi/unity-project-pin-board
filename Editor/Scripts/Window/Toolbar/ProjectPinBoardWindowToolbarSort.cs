@@ -16,14 +16,14 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <summary>
         /// 排序菜单
         /// </summary>
-        private ToolbarMenu m_SortingMenu = null;
+        private ToolbarMenu m_ToolbarSortingMenu = null;
 
         /// <summary>
         /// 初始化
         /// </summary>
         private void InitToolbarSortingMenu()
         {
-            m_SortingMenu = new ToolbarMenu()
+            m_ToolbarSortingMenu = new ToolbarMenu()
             {
                 name = "SortingMenu",
                 tooltip = "Asset list sorting",
@@ -44,16 +44,16 @@ namespace ChenPipi.ProjectPinBoard.Editor
                     justifyContent = Justify.SpaceBetween,
                 }
             };
-            m_Toolbar.Add(m_SortingMenu);
+            m_Toolbar.Add(m_ToolbarSortingMenu);
             // 图标
-            m_SortingMenu.Insert(0, new Image()
+            m_ToolbarSortingMenu.Insert(0, new Image()
             {
                 image = PipiUtility.GetIcon("AlphabeticalSorting"),
                 scaleMode = ScaleMode.ScaleToFit,
             });
             // 隐藏文本元素
             {
-                TextElement text = m_SortingMenu.Q<TextElement>("", "unity-text-element");
+                TextElement text = m_ToolbarSortingMenu.Q<TextElement>("", "unity-text-element");
                 text.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
             }
 
@@ -84,7 +84,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// </summary>
         private void BuildSortingMenuItems()
         {
-            DropdownMenu menu = m_SortingMenu.menu;
+            DropdownMenu menu = m_ToolbarSortingMenu.menu;
             foreach (var item in s_SortingMenuMap)
             {
                 menu.AppendAction(item.Key, OnSortingMenuAction, GetSortingMenuActionStatus);

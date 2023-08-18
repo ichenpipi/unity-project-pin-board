@@ -8,7 +8,11 @@
 
 _操作简单，效率翻倍！_
 
-## 安装
+![intro-001](Screenshots~/intro-001.png)
+
+![intro-002](Screenshots~/intro-002.gif)
+
+## 安装方法
 
 ### 从 Package Manager 安装（推荐）
 
@@ -23,7 +27,7 @@ _操作简单，效率翻倍！_
 
 下载该项目，放到你的 Unity 项目中的 Assets 文件夹下（也可以放在任意子文件夹下）。
 
-## 使用
+## 使用指南
 
 ### 打开主窗口
 
@@ -69,54 +73,61 @@ _操作简单，效率翻倍！_
 
 1. 可以将资源从 **Project Pin Board** 窗口拖到 Hierarchy/Scene 窗口中，和 Project 窗口中的拖拽操作一致
 
-## 截图
+### 快捷键
 
-![image-001.png](Screenshots~/image-001.png)
+- `Alt+Shift+R`: 在操作系统资源管理器中展示选中的资源
+- `Ctrl+F`: 聚焦到搜索栏
+- `F2`: 设置第一个选中的资源的展示名
+- `F5`: 重新加载数据和设置
+- `Delete/Backspace`: 取消固定（Unpin）选中的资源
 
-![image-002.png](Screenshots~/image-002.png)
+## 截图/演示动画
 
-![image-003.png](Screenshots~/image-003.png)
+![image-001](Screenshots~/image-001.png)
 
-![image-004.png](Screenshots~/image-004.png)
+![image-002](Screenshots~/image-002.png)
 
-![image-005.png](Screenshots~/image-005.png)
+![image-003](Screenshots~/image-003.png)
 
-![image-006.png](Screenshots~/image-006.png)
+![image-004](Screenshots~/image-004.png)
 
-![gif-001.png](Screenshots~/gif-001.gif)
+![image-005](Screenshots~/image-005.png)
 
-![gif-002.png](Screenshots~/gif-002.gif)
+![image-006](Screenshots~/image-006.png)
 
-![gif-003.png](Screenshots~/gif-003.gif)
+![gif-002](Screenshots~/gif-002.gif)
 
-![gif-004.png](Screenshots~/gif-004.gif)
+![gif-003](Screenshots~/gif-003.gif)
 
-![gif-005.png](Screenshots~/gif-005.gif)
+![gif-004](Screenshots~/gif-004.gif)
 
-![gif-006.png](Screenshots~/gif-006.gif)
+![gif-005](Screenshots~/gif-005.gif)
 
-## 兼容
+![gif-006](Screenshots~/gif-006.gif)
 
-本插件兼容以下 Unity 编辑器版本：
+## 兼容性
 
-- 2020.2 及以上
+本项目兼容以下 Unity 编辑器版本：
 
-### 测试
+- 2020.2 及更高版本
 
-| Unity 版本          | 是否已通过测试 | 备注 |
-|-------------------|---------|----|
-| Unity 2020.2.5f1  | ✔️      |    |
-| Unity 2021.2.16f1 | ✔️      |    |
-| Unity 2021.3.8f1  | ✔️      |    |
-| Unity 2021.3.15f1 | ✔️      |    |
-| Unity 2021.3.22f1 | ✔️      |    |
-| Unity 2021.3.27f1 | ✔️      |    |
+### 测试细节
+
+| Unity 版本          | 是否通过测试 | 备注  |
+|-------------------|--------|-----|
+| Unity 2020.2.5f1  | ✔️     |     |
+| Unity 2021.2.16f1 | ✔️     |     |
+| Unity 2021.3.8f1  | ✔️     |     |
+| Unity 2021.3.15f1 | ✔️     |     |
+| Unity 2021.3.22f1 | ✔️     |     |
+| Unity 2021.3.27f1 | ✔️     |     |
+| Unity 2021.3.29f1 | ✔️     |     |
 
 ## 依赖
 
-| 包名 | 版本 | 备注 |
-|----|----|----|
-| 无  | 无  |    |
+| 包名  | 版本  | 备注  |
+|-----|-----|-----|
+| 无   | 无   |     |
 
 ## 开源许可
 

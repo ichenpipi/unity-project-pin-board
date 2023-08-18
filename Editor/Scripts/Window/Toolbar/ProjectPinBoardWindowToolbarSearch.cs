@@ -13,7 +13,7 @@ namespace ChenPipi.ProjectPinBoard.Editor
     {
 
         /// <summary>
-        /// 工具栏搜索栏
+        /// 搜索栏
         /// </summary>
         private ToolbarSearchField m_ToolbarSearchField = null;
 
@@ -24,8 +24,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
         {
             m_ToolbarSearchField = new ToolbarSearchField()
             {
-                name = "SearchField",
+                name = "Search",
                 value = m_SearchText,
+                tooltip = "Search [Ctrl+F]",
                 style =
                 {
                     width = StyleKeyword.Auto,
@@ -55,10 +56,9 @@ namespace ChenPipi.ProjectPinBoard.Editor
         private void OnSearchFieldValueChanged(ChangeEvent<string> evt)
         {
             SetSearchText(evt.newValue);
-            UpdateContent();
         }
 
-        #region Searching
+        #region SearchField
 
         /// <summary>
         /// 搜索文本
@@ -71,8 +71,22 @@ namespace ChenPipi.ProjectPinBoard.Editor
         /// <param name="value"></param>
         private void SetSearchText(string value)
         {
-            m_ToolbarSearchField.value = (m_SearchText = value);
+            m_SearchText = value;
+            m_ToolbarSearchField.SetValueWithoutNotify(value);
+            UpdateContent();
         }
+
+        /// <summary>
+        /// 聚焦到搜索框
+        /// </summary>
+        private void FocusToSearchField()
+        {
+            m_ToolbarSearchField.Focus();
+        }
+
+        #endregion
+
+        #region Searching
 
         /// <summary>
         /// 获取不包含过滤器的实际搜索内容
@@ -91,14 +105,6 @@ namespace ChenPipi.ProjectPinBoard.Editor
                 text = match.Groups[3].Value;
             }
             return text;
-        }
-
-        /// <summary>
-        /// 聚焦到搜索框
-        /// </summary>
-        private void FocusToSearchField()
-        {
-            m_ToolbarSearchField.Focus();
         }
 
         #endregion
